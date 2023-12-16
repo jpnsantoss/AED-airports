@@ -1,0 +1,5 @@
+build/**
+cmake-build-debug/**
+docs/output/**
+.idea/**
+Project-AED-Airports
