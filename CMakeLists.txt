@@ -12,7 +12,6 @@ add_executable(Project_AED_Airports src/main.cpp
         src/models/Airline.h
         src/models/Flight.cpp
         src/models/Flight.h
-        src/utils/Graph.cpp
         src/utils/Graph.h
         src/controllers/FlightManagement.cpp
         src/controllers/FlightManagement.h
