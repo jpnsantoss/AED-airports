@@ -1,6 +1,12 @@
 #include <iostream>
-
+#include "views/MainMenu.h"
+#include "utils/Dataset.h"
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Dataset* dataset = Dataset::getInstance();
+    Menu* menu;
+    // Point to main menu
+    menu = new MainMenu();
+    menu->display();
+
     return 0;
 }
