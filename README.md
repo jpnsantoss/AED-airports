@@ -8,9 +8,6 @@ It's supposed to be extended later for each view that we will later have.
 This class is responsible for managing all flight-related operations.
 It will operate side-by-side with the Graph.h class.
 
-### CSVReader
-This class is responsible for reading data from CSV files.
-
 ### Dataset
 This class contains all the data related to airports, airlines, and flights. It has the following attributes:
 - `std::vector<Flight> flights`: A vector to store all the flights.

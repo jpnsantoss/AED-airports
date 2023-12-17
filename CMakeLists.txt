@@ -3,26 +3,25 @@ project(Project_AED_Airports)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  "${CMAKE_CURRENT_SOURCE_DIR}")
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 add_executable(Project_AED_Airports src/main.cpp
-        src/Dataset.cpp
-        src/Dataset.h
         src/models/Airport.cpp
         src/models/Airport.h
         src/models/Airline.cpp
         src/models/Airline.h
-        src/models/Location.cpp
-        src/models/Location.h
         src/models/Flight.cpp
         src/models/Flight.h
         src/utils/Graph.cpp
         src/utils/Graph.h
-        src/utils/CSVReader.cpp
-        src/utils/CSVReader.h
         src/controllers/FlightManagement.cpp
         src/controllers/FlightManagement.h
         src/views/Menu.cpp
-        src/views/Menu.h)
+        src/views/Menu.h
+        src/views/MainMenu.h
+        src/utils/Dataset.cpp
+        src/utils/Dataset.h
+)
 
 # Doxygen Build
 find_package(Doxygen)
