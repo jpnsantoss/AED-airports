@@ -5,23 +5,39 @@
 #include "Airline.h"
 
 // Constructor
-Airline::Airline(const string &airlineCode, const string &airlineName)
-        : airlineCode(airlineCode), airlineName(airlineName) {}
+Airline::Airline(const std::string &code, const std::string &name, const std::string &callsign, const std::string &country)
+        : code(code), name(name), callsign(callsign), country(country) {}
 
 // Getters
-string Airline::getAirlineCode() const {
-    return airlineCode;
+std::string Airline::getCode() const {
+    return code;
 }
 
-string Airline::getAirlineName() const {
-    return airlineName;
+std::string Airline::getName() const {
+    return name;
+}
+
+std::string Airline::getCallsign() const {
+    return callsign;
+}
+
+std::string Airline::getCountry() const {
+    return country;
 }
 
 // Setters
-void Airline::setAirlineCode(const string &airlineCode) {
-    this->airlineCode = airlineCode;
+void Airline::setCode(const std::string &code) {
+    this->code = code;
 }
 
-void Airline::setAirlineName(const string &airlineName) {
-    this->airlineName = airlineName;
+void Airline::setName(const std::string &name) {
+    this->name = name;
+}
+
+void Airline::setCallsign(const std::string &callsign) {
+    this->callsign = callsign;
+}
+
+void Airline::setCountry(const std::string &country) {
+    this->country = country;
 }

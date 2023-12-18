@@ -12,7 +12,9 @@ public:
     void display() override {
         Dataset* dataset = Dataset::getInstance();
         cout << "Welcome to AED Airports!" << endl;
-
+        for(auto airport: dataset->getAirports()) {
+            cout << airport.getAirportCode() << " " << airport.getAirportName() << endl;
+        }
         cout << dataset->getAirlines().size() << endl;
         cout << dataset->getAirports().size() << endl;
         cout << dataset->getFlights().size() << endl;

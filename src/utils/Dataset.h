@@ -3,12 +3,15 @@
 
 #include <vector>
 #include <string>
+#include "utils/Graph.h"
 #include "models/Flight.h"
 #include "models/Airport.h"
 #include "models/Airline.h"
 
 class Dataset {
 private:
+    Graph<Airport> airportGraph;
+
     std::vector<Flight> flights;
     std::vector<Airport> airports;
     std::vector<Airline> airlines;
@@ -34,6 +37,11 @@ public:
     const std::vector<Flight> &getFlights() const;
     const std::vector<Airport> &getAirports() const;
     const std::vector<Airline> &getAirlines() const;
+    const Graph<Airport>& getAirportGraph() const;
+
+    Airport findAirportByCode(const string &code);
+
+    Airline findAirlineByCode(const string &code);
 };
 
 #endif //PROJECT_AED_AIRPORTS_DATASET_H

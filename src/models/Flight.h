@@ -6,32 +6,29 @@
 #define PROJECT_AED_AIRPORTS_FLIGHT_H
 
 #include <string>
+#include "Airport.h"
+#include "Airline.h"
 using namespace std;
 class Flight {
 private:
-    string flightNumber;
-    string departureAirport;
-    string arrivalAirport;
-    string departureTime;
-    string arrivalTime;
+    Airport source;
+    Airport target;
+    Airline airline;
+    double distance;
 
 public:
     // Constructor
-    Flight(const string &flightNumber, const string &departureAirport, const string &arrivalAirport, const string &departureTime, const string &arrivalTime);
+    Flight(const Airport &source, const Airport &target, const Airline &airline);
 
     // Getters
-    string getFlightNumber() const;
-    string getDepartureAirport() const;
-    string getArrivalAirport() const;
-    string getDepartureTime() const;
-    string getArrivalTime() const;
+    Airport getSource() const;
+    Airport getTarget() const;
+    Airline getAirline() const;
+    double getDistance() const;
 
     // Setters
-    void setFlightNumber(const string &flightNumber);
-    void setDepartureAirport(const string &departureAirport);
-    void setArrivalAirport(const string &arrivalAirport);
-    void setDepartureTime(const string &departureTime);
-    void setArrivalTime(const string &arrivalTime);
+    void setSource(const Airport &source);
+    void setTarget(const Airport &target);
+    void setAirline(const Airline &airline);
 };
-
 #endif //PROJECT_AED_AIRPORTS_FLIGHT_H

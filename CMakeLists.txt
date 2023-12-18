@@ -20,6 +20,8 @@ add_executable(Project_AED_Airports src/main.cpp
         src/views/MainMenu.h
         src/utils/Dataset.cpp
         src/utils/Dataset.h
+        src/models/Location.cpp
+        src/models/Location.h
 )
 
 # Doxygen Build
