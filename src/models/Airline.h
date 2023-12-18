@@ -9,20 +9,26 @@
 using namespace std;
 class Airline {
 private:
-    string airlineCode;
-    string airlineName;
+    string code;
+    string name;
+    string callsign;
+    string country;
 
 public:
     // Constructor
-    Airline(const string &airlineCode, const string &airlineName);
+    Airline(const string &code, const string &name, const string &callsign, const string &country);
 
     // Getters
-    string getAirlineCode() const;
-    string getAirlineName() const;
+    string getCode() const;
+    string getName() const;
+    string getCallsign() const;
+    string getCountry() const;
 
     // Setters
-    void setAirlineCode(const string &airlineCode);
-    void setAirlineName(const string &airlineName);
+    void setCode(const string &code);
+    void setName(const string &name);
+    void setCallsign(const string &callsign);
+    void setCountry(const string &country);
 };
 
 #endif //PROJECT_AED_AIRPORTS_AIRLINE_H

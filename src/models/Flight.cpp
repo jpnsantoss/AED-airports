@@ -5,48 +5,37 @@
 #include "Flight.h"
 
 // Constructor
-Flight::Flight(const std::string &flightNumber, const std::string &departureAirport, const std::string &arrivalAirport, const std::string &departureTime, const std::string &arrivalTime)
-        : flightNumber(flightNumber), departureAirport(departureAirport), arrivalAirport(arrivalAirport), departureTime(departureTime), arrivalTime(arrivalTime) {}
-
+Flight::Flight(const Airport &source, const Airport &target, const Airline &airline)
+        : source(source), target(target), airline(airline), distance(source.getLocation().calculateDistanceTo(target.getLocation())) {}
 
 // Getters
-string Flight::getFlightNumber() const {
-    return flightNumber;
+Airport Flight::getSource() const {
+    return source;
 }
 
-string Flight::getDepartureAirport() const {
-    return departureAirport;
+Airport Flight::getTarget() const {
+    return target;
 }
 
-string Flight::getArrivalAirport() const {
-    return arrivalAirport;
+Airline Flight::getAirline() const {
+    return airline;
 }
 
-string Flight::getDepartureTime() const {
-    return departureTime;
-}
-
-string Flight::getArrivalTime() const {
-    return arrivalTime;
+double Flight::getDistance() const {
+    return distance;
 }
 
 // Setters
-void Flight::setFlightNumber(const string &flightNumber) {
-    Flight::flightNumber = flightNumber;
+void Flight::setSource(const Airport &source) {
+    this->source = source;
+    this->distance = this->source.getLocation().calculateDistanceTo(this->target.getLocation());
 }
 
-void Flight::setDepartureAirport(const string &departureAirport) {
-    Flight::departureAirport = departureAirport;
+void Flight::setTarget(const Airport &target) {
+    this->target = target;
+    this->distance = this->source.getLocation().calculateDistanceTo(this->target.getLocation());
 }
 
-void Flight::setArrivalAirport(const string &arrivalAirport) {
-    Flight::arrivalAirport = arrivalAirport;
-}
-
-void Flight::setDepartureTime(const string &departureTime) {
-    Flight::departureTime = departureTime;
-}
-
-void Flight::setArrivalTime(const string &arrivalTime) {
-    Flight::arrivalTime = arrivalTime;
+void Flight::setAirline(const Airline &airline) {
+    this->airline = airline;
 }

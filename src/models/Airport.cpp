@@ -5,8 +5,8 @@
 #include "Airport.h"
 
 // Constructor
-Airport::Airport(const string &airportCode, const string &airportName, const string &city, const string &country)
-        : airportCode(airportCode), airportName(airportName), city(city), country(country) {}
+Airport::Airport(const string &airportCode, const string &airportName, const string &city, const string &country, const Location &location)
+        : airportCode(airportCode), airportName(airportName), city(city), country(country), location(location) {}
 
 // Getters
 string Airport::getAirportCode() const {
@@ -25,19 +25,40 @@ string Airport::getCountry() const {
     return country;
 }
 
+Location Airport::getLocation() const {
+    return location;
+}
+
 // Setters
 void Airport::setAirportCode(const string &airportCode) {
-    Airport::airportCode = airportCode;
+    this->airportCode = airportCode;
 }
 
 void Airport::setAirportName(const string &airportName) {
-    Airport::airportName = airportName;
+    this->airportName = airportName;
 }
 
 void Airport::setCity(const string &city) {
-    Airport::city = city;
+    this->city = city;
 }
 
 void Airport::setCountry(const string &country) {
-    Airport::country = country;
+    this->country = country;
+}
+
+void Airport::setLocation(const Location &location) {
+    this->location = location;
+}
+
+double Airport::calculateDistanceTo(const Airport &other) const {
+    return this->location.calculateDistanceTo(other.getLocation());
+}
+
+ostream &operator<<(ostream &os, Airport &airport) {
+    os << airport.getAirportCode();
+    return os;
+}
+
+bool Airport::operator==(const Airport &other) const {
+    return (this->airportCode == other.getAirportCode());
 }
