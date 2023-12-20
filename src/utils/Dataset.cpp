@@ -100,7 +100,7 @@ void Dataset::loadFlights() {
         Airline airline = findAirlineByCode(airlineCode);
         Flight flight(source, target, airline);
         flights.push_back(flight);
-        airportGraph.addEdge(source, target, flight.getDistance());
+        airportGraph.addEdge(source, target, flight.getDistance(), flight.getAirline());
     }
     file.close();
 }
