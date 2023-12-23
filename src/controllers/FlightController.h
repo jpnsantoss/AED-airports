@@ -30,6 +30,10 @@ public:
     void buildPaths(Vertex<Airport> *origin, Vertex<Airport> *destination,
                     map<Vertex<Airport> *, std::vector<Vertex<Airport> *>> &prev, vector<Airport> &path,
                     vector<std::vector<Airport>> &paths);
+
+    vector<Airport> getNearestAirports(const Location &location);
+
+    vector<vector<Airport>> getBestFlightOptionByLocation(const Location &source, const Location &destination);
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H

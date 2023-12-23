@@ -48,6 +48,26 @@ vector<Airport> FlightController::findAirportsByCity(const string &city) {
     return airportsInCity;
 }
 
+vector<Airport> FlightController::getNearestAirports(const Location &location) {
+    Dataset* dataset = Dataset::getInstance();
+    const vector<Airport> &airports = dataset->getAirports();
+    vector<Airport> nearestAirports;
+    double minDistance = numeric_limits<double>::max();
+
+    for (const auto &airport : airports) {
+        double distance = location.calculateDistanceTo(airport.getLocation());
+        if (distance < minDistance) {
+            nearestAirports.clear();
+            minDistance = distance;
+        }
+        if (distance == minDistance) {
+            nearestAirports.push_back(airport);
+        }
+    }
+
+    return nearestAirports;
+}
+
 vector<vector<Airport>> FlightController::getShortestPathsBFS(const Airport &origin, const Airport &destination) {
     map<Vertex<Airport>*, vector<Vertex<Airport>*>> prev;
     queue<Vertex<Airport>*> queue;
@@ -124,6 +144,43 @@ vector<vector<Airport>> FlightController::getBestFlightOptionByCity(const string
     if (destinationAirports.empty()) {
         throw runtime_error("Destination city not found");
     }
+
+    vector<vector<Airport>> bestPaths;
+    int minStops = numeric_limits<int>::max();
+
+    for (const auto &sourceAirport : sourceAirports) {
+        for (const auto &destinationAirport : destinationAirports) {
+            try {
+                vector<vector<Airport>> paths = getBestFlightOptionByAirport(sourceAirport.getAirportCode(), destinationAirport.getAirportCode());
+                for (const auto &path : paths) {
+                    if (path.size() - 1 < minStops) {
+                        bestPaths.clear();
+                        minStops = path.size() - 1;
+                    }
+                    if (path.size() - 1 == minStops) {
+                        // Check if bestPaths already contains path
+                        if (find(bestPaths.begin(), bestPaths.end(), path) == bestPaths.end()) {
+                            // If not, add path to bestPaths
+                            bestPaths.push_back(path);
+                        }
+                    }
+                }
+            } catch (runtime_error &e) {
+                // Ignore exceptions for airports without a path
+            }
+        }
+    }
+
+    if (bestPaths.empty()) {
+        throw runtime_error("No path found");
+    }
+
+    return bestPaths;
+}
+
+vector<vector<Airport>> FlightController::getBestFlightOptionByLocation(const Location &source, const Location &destination) {
+    vector<Airport> sourceAirports = getNearestAirports(source);
+    vector<Airport> destinationAirports = getNearestAirports(destination);
 
     vector<vector<Airport>> bestPaths;
     int minStops = numeric_limits<int>::max();
