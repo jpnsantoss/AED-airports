@@ -1,7 +1,8 @@
 //
 // Created by jpsantos on 21-12-2023.
 //
-
+#include <sstream>
+#include <string>
 #include <vector>
 #include <queue>
 #include <map>
@@ -12,6 +13,16 @@
 FlightController::FlightController() {
     Dataset* dataset = Dataset::getInstance();
     airportGraph = dataset->getAirportGraph();
+}
+
+std::vector<std::string> splitString(const std::string &str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
 }
 
 // Method to find an airport by its code or name
@@ -33,6 +44,20 @@ Airport FlightController::findAirport(const string &identifier) {
     throw runtime_error("Airport not found");
 }
 
+vector<Airport> FlightController::findAirportsByName(const string &name) {
+    Dataset* dataset = Dataset::getInstance();
+    const vector<Airport> &airports = dataset->getAirports();
+    vector<Airport> matchingAirports;
+
+    for (const auto &airport : airports) {
+        if (airport.getAirportName() == name) {
+            matchingAirports.push_back(airport);
+        }
+    }
+
+    return matchingAirports;
+}
+
 // Method to find all airports in a given city
 vector<Airport> FlightController::findAirportsByCity(const string &city) {
     Dataset* dataset = Dataset::getInstance();
@@ -47,6 +72,7 @@ vector<Airport> FlightController::findAirportsByCity(const string &city) {
 
     return airportsInCity;
 }
+
 
 vector<Airport> FlightController::getNearestAirports(const Location &location) {
     Dataset* dataset = Dataset::getInstance();
@@ -123,94 +149,207 @@ void FlightController::buildPaths(Vertex<Airport>* origin, Vertex<Airport>* dest
     path.pop_back();
 }
 
-vector<vector<Airport>> FlightController::getBestFlightOptionByAirport(const string &source, const string &destination) {
+void FlightController::findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res) {
     try {
         Airport sourceAirport = findAirport(source);
         Airport destinationAirport = findAirport(destination);
-        return getShortestPathsBFS(sourceAirport, destinationAirport);
-
+        vector<vector<Airport>> paths = getShortestPathsBFS(sourceAirport, destinationAirport);
+        res.insert(res.end(), paths.begin(), paths.end());
     } catch (runtime_error &e) {
-        throw runtime_error("No path found");
+        // Ignore exceptions for airports without a path
     }
 }
 
-vector<vector<Airport>> FlightController::getBestFlightOptionByCity(const string &source, const string &destination) {
-    vector<Airport> sourceAirports = findAirportsByCity(source);
-    vector<Airport> destinationAirports = findAirportsByCity(destination);
+vector<vector<Airport>> FlightController::getBestFlightOption(FlightOption sourceOption, const string &source, FlightOption destinationOption, const string &destination) {
+    vector<vector<Airport>> res;
 
-    if (sourceAirports.empty()) {
-        throw runtime_error("Source city not found");
-    }
-    if (destinationAirports.empty()) {
-        throw runtime_error("Destination city not found");
-    }
-
-    vector<vector<Airport>> bestPaths;
-    int minStops = numeric_limits<int>::max();
-
-    for (const auto &sourceAirport : sourceAirports) {
-        for (const auto &destinationAirport : destinationAirports) {
-            try {
-                vector<vector<Airport>> paths = getBestFlightOptionByAirport(sourceAirport.getAirportCode(), destinationAirport.getAirportCode());
-                for (const auto &path : paths) {
-                    if (path.size() - 1 < minStops) {
-                        bestPaths.clear();
-                        minStops = path.size() - 1;
-                    }
-                    if (path.size() - 1 == minStops) {
-                        // Check if bestPaths already contains path
-                        if (find(bestPaths.begin(), bestPaths.end(), path) == bestPaths.end()) {
-                            // If not, add path to bestPaths
-                            bestPaths.push_back(path);
+    switch (sourceOption) {
+        case FlightOption::ByAirportCode:
+        {
+            vector<Airport> sourceAirports = vector<Airport>{findAirport(source)};
+            for (const auto &sourceAirport : sourceAirports) {
+                switch (destinationOption) {
+                    case FlightOption::ByAirportCode:
+                    {
+                        vector<Airport> destinationAirports = vector<Airport>{findAirport(destination)};
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
+                        break;
                     }
-                }
-            } catch (runtime_error &e) {
-                // Ignore exceptions for airports without a path
-            }
-        }
-    }
-
-    if (bestPaths.empty()) {
-        throw runtime_error("No path found");
-    }
-
-    return bestPaths;
-}
-
-vector<vector<Airport>> FlightController::getBestFlightOptionByLocation(const Location &source, const Location &destination) {
-    vector<Airport> sourceAirports = getNearestAirports(source);
-    vector<Airport> destinationAirports = getNearestAirports(destination);
-
-    vector<vector<Airport>> bestPaths;
-    int minStops = numeric_limits<int>::max();
-
-    for (const auto &sourceAirport : sourceAirports) {
-        for (const auto &destinationAirport : destinationAirports) {
-            try {
-                vector<vector<Airport>> paths = getBestFlightOptionByAirport(sourceAirport.getAirportCode(), destinationAirport.getAirportCode());
-                for (const auto &path : paths) {
-                    if (path.size() - 1 < minStops) {
-                        bestPaths.clear();
-                        minStops = path.size() - 1;
-                    }
-                    if (path.size() - 1 == minStops) {
-                        // Check if bestPaths already contains path
-                        if (find(bestPaths.begin(), bestPaths.end(), path) == bestPaths.end()) {
-                            // If not, add path to bestPaths
-                            bestPaths.push_back(path);
+                    case FlightOption::ByAirportName:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByName(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
+                        break;
                     }
+                    case FlightOption::ByCity:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByCity(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByLocation:
+                    {
+                        vector<string> destCoords = splitString(destination, ',');
+                        Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
+                        vector<Airport> destinationAirports = getNearestAirports(destinationLocation);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    default:
+                        throw runtime_error("Invalid destination option");
                 }
-            } catch (runtime_error &e) {
-                // Ignore exceptions for airports without a path
             }
+            break;
         }
+        case FlightOption::ByAirportName:
+        {
+            vector<Airport> sourceAirports = findAirportsByName(source);
+            for (const auto &sourceAirport : sourceAirports) {
+                switch (destinationOption) {
+                    case FlightOption::ByAirportCode:
+                    {
+                        vector<Airport> destinationAirports = vector<Airport>{findAirport(destination)};
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByAirportName:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByName(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByCity:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByCity(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByLocation:
+                    {
+                        vector<string> destCoords = splitString(destination, ',');
+                        Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
+
+                        vector<Airport> destinationAirports = getNearestAirports(destinationLocation);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    default:
+                        throw runtime_error("Invalid destination option");
+                }
+            }
+            break;
+        }
+        case FlightOption::ByCity:
+        {
+            vector<Airport> sourceAirports = findAirportsByCity(source);
+            for (const auto &sourceAirport : sourceAirports) {
+                switch (destinationOption) {
+                    case FlightOption::ByAirportCode:
+                    {
+                        vector<Airport> destinationAirports = vector<Airport>{findAirport(destination)};
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByAirportName:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByName(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByCity:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByCity(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByLocation:
+                    {
+                        vector<string> destCoords = splitString(destination, ',');
+                        Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
+                        vector<Airport> destinationAirports = getNearestAirports(destinationLocation);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    default:
+                        throw runtime_error("Invalid destination option");
+                }
+            }
+            break;
+        }
+        case FlightOption::ByLocation:
+        {
+            vector<string> sourceCoords = splitString(source, ',');
+            Location sourceLocation(stod(sourceCoords[0]), stod(sourceCoords[1]));
+            vector<Airport> sourceAirports = getNearestAirports(sourceLocation);
+            for (const auto &sourceAirport : sourceAirports) {
+                switch (destinationOption) {
+                    case FlightOption::ByAirportCode:
+                    {
+                        vector<Airport> destinationAirports = vector<Airport>{findAirport(destination)};
+                        for (auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByAirportName:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByName(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByCity:
+                    {
+                        vector<Airport> destinationAirports = findAirportsByCity(destination);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    case FlightOption::ByLocation:
+                    {
+                        vector<string> destCoords = splitString(destination, ',');
+                        Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
+                        vector<Airport> destinationAirports = getNearestAirports(destinationLocation);
+                        for (const auto &destinationAirport : destinationAirports) {
+                            findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
+                        }
+                        break;
+                    }
+                    default:
+                        throw runtime_error("Invalid destination option");
+                }
+            }
+            break;
+        }
+        default:
+            throw runtime_error("Invalid source option");
     }
 
-    if (bestPaths.empty()) {
-        throw runtime_error("No path found");
-    }
-
-    return bestPaths;
+    return res;
 }

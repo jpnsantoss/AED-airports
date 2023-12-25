@@ -9,6 +9,13 @@
 #include "models/Airport.h"
 #include <vector>
 
+enum class FlightOption {
+    ByAirportCode,
+    ByAirportName,
+    ByCity,
+    ByLocation
+};
+
 class FlightController {
 private:
     Graph<Airport> airportGraph;
@@ -16,6 +23,7 @@ private:
 public:
     FlightController();
 
+    vector<Airport> findAirportsByName(const string &name);
     vector<Airport> findAirportsByCity(const string &city);
 
 
@@ -23,17 +31,17 @@ public:
 
     vector<vector<Airport>> getShortestPathsBFS(const Airport &origin, const Airport &destination);
 
-    vector<vector<Airport>> getBestFlightOptionByAirport(const string &source, const string &destination);
-
-    vector<vector<Airport>> getBestFlightOptionByCity(const string &source, const string &destination);
-
     void buildPaths(Vertex<Airport> *origin, Vertex<Airport> *destination,
                     map<Vertex<Airport> *, std::vector<Vertex<Airport> *>> &prev, vector<Airport> &path,
                     vector<std::vector<Airport>> &paths);
 
     vector<Airport> getNearestAirports(const Location &location);
 
-    vector<vector<Airport>> getBestFlightOptionByLocation(const Location &source, const Location &destination);
+    vector<vector<Airport>>
+    getBestFlightOption(FlightOption sourceOption, const string &source, FlightOption destinationOption,
+                        const string &destination);
+
+    void findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res);
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H
