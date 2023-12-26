@@ -50,10 +50,6 @@ void Airport::setLocation(const Location &location) {
     this->location = location;
 }
 
-double Airport::calculateDistanceTo(const Airport &other) const {
-    return this->location.calculateDistanceTo(other.getLocation());
-}
-
 ostream &operator<<(ostream &os, Airport &airport) {
     os << airport.getAirportCode();
     return os;

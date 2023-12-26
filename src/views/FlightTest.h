@@ -4,13 +4,49 @@
 
 #include "Menu.h"
 #include "controllers/FlightController.h"
+#include "controllers/filters/AirlineFilterFlightController.h"
+#include "controllers/filters/MinimizeAirlinesFlightController.h"
 #include <iostream>
 #include <vector>
 
 class FlightTest : public Menu {
 public:
     void display() override {
-        FlightController flightController;
+        FlightController* flightController = nullptr;
+        int filterChoice;
+        std::cout << "Before we start, do you want to add any filter to your search? (1 for yes, 2 for no): ";
+        std::cin >> filterChoice;
+
+        if (filterChoice == 1) {
+            std::cout << "Choose filter option:\n";
+            std::cout << "1. Airline filter\n";
+            std::cout << "2. Minimize airlines filter\n";
+            std::cout << "Enter your choice: ";
+            std::cin >> filterChoice;
+
+            switch (filterChoice) {
+                case 1: {
+                    std::vector<std::string> airlines;
+                    std::string airline;
+                    std::cout << "Enter airlines (type 'done' when finished): ";
+                    while (std::cin >> airline && airline != "done") {
+                        airlines.push_back(airline);
+                    }
+                    flightController = new AirlineFilterFlightController(airlines);
+                    break;
+                }
+                case 2:
+                    flightController = new MinimizeAirlinesFlightController();
+                    break;
+                default:
+                    std::cout << "Invalid choice. Please try again.\n";
+                    return;
+            }
+        } else if (filterChoice != 2) {
+            std::cout << "Invalid choice. Please try again.\n";
+            return;
+        }
+
         int sourceChoice, destinationChoice;
         std::string source, destination;
         double sourceLat, sourceLon, destLat, destLon;
@@ -72,7 +108,7 @@ public:
 
             FlightOption sourceOption = static_cast<FlightOption>(sourceChoice - 1);
             FlightOption destinationOption = static_cast<FlightOption>(destinationChoice - 1);
-            displayPaths(flightController.getBestFlightOption(sourceOption, source, destinationOption, destination));
+            displayPaths(flightController->getBestFlightOption(sourceOption, source, destinationOption, destination));
         }
     }
 

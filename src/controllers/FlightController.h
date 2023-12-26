@@ -17,9 +17,9 @@ enum class FlightOption {
 };
 
 class FlightController {
-private:
-    Graph<Airport> airportGraph;
 
+protected:
+    Graph<Airport> airportGraph;
 public:
     FlightController();
 
@@ -29,7 +29,7 @@ public:
 
     Airport findAirport(const string &identifier);
 
-    vector<vector<Airport>> getShortestPathsBFS(const Airport &origin, const Airport &destination);
+    virtual vector<vector<Airport>> getShortestPathsBFS(const Airport &origin, const Airport &destination);
 
     void buildPaths(Vertex<Airport> *origin, Vertex<Airport> *destination,
                     map<Vertex<Airport> *, std::vector<Vertex<Airport> *>> &prev, vector<Airport> &path,
