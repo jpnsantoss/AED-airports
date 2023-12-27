@@ -36,7 +36,7 @@ public:
                     std::cin >> sourceLon;
                     source = to_string(sourceLat) + "," + to_string(sourceLon);
                     break;
-                case 5:
+                case 0:
                     return;
                 default:
                     std::cout << "Invalid choice. Please try again.\n";
@@ -63,7 +63,7 @@ public:
                     std::cin >> destLon;
                     destination = to_string(destLat) + "," + to_string(destLon);
                     break;
-                case 5:
+                case 0:
                     return;
                 default:
                     std::cout << "Invalid choice. Please try again.\n";
@@ -78,23 +78,35 @@ public:
 
 private:
     void printSourceMenu() {
-        std::cout << "Choose source option:\n";
-        std::cout << "1. By airport code\n";
-        std::cout << "2. By airport name\n";
-        std::cout << "3. By city\n";
-        std::cout << "4. By location\n";
-        std::cout << "5. Exit\n";
-        std::cout << "Enter your choice: ";
+        std::cout << "**********************************************\n"
+                  << "*   best flight option                       *\n"
+                  << "*                                            *\n"
+                  << "*           Choose source option             *\n"
+                  << "*                                            *\n"
+                  << "*     1) By airport code                     *\n"
+                  << "*     2) By airport name                     *\n"
+                  << "*     3) By city                             *\n"
+                  << "*     4) By location                         *\n"
+                  << "*                                            *\n"
+                  << "*                                   0) Back  *\n"
+                  << "**********************************************\n"
+                  << "Option: ";
     }
 
     void printDestinationMenu() {
-        std::cout << "Choose destination option:\n";
-        std::cout << "1. By airport code\n";
-        std::cout << "2. By airport name\n";
-        std::cout << "3. By city\n";
-        std::cout << "4. By location\n";
-        std::cout << "5. Exit\n";
-        std::cout << "Enter your choice: ";
+        std::cout << "**********************************************\n"
+                  << "*   best flight option                       *\n"
+                  << "*                                            *\n"
+                  << "*         Choose destination option          *\n"
+                  << "*                                            *\n"
+                  << "*     1) By airport code                     *\n"
+                  << "*     2) By airport name                     *\n"
+                  << "*     3) By city                             *\n"
+                  << "*     4) By location                         *\n"
+                  << "*                                            *\n"
+                  << "*                                   0) Back  *\n"
+                  << "**********************************************\n"
+                  << "Option: ";
     }
 
     void displayPaths(const std::vector<std::vector<Airport>>& paths) {

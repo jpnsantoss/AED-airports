@@ -7,30 +7,45 @@
 
 #include "Menu.h"
 #include "FlightTest.h" // Include the FlightTest header file
+#include "StatisticsMenu.h"
 #include <iostream>
 #include "utils/Dataset.h"
 
 class MainMenu : public Menu {
 public:
     void display() override {
-        Dataset* dataset = Dataset::getInstance();
-        cout << "Welcome to AED Airports!" << endl;
-
-        cout << dataset->getAirlines().size() << endl;
-        cout << dataset->getAirports().size() << endl;
-        cout << dataset->getFlights().size() << endl;
-
-        // Add a new option for the flight test
-        cout << "4. Flight Test\n";
-        cout << "Enter your choice: ";
-        int choice;
-        cin >> choice;
-
-        // If the flight test option is selected, create a new FlightTest object and call its display method
-        if (choice == 4) {
-            FlightTest flightTest;
-            flightTest.display();
-        }
+        std::cout << "**********************************************\n"
+                  << "*                                            *\n"
+                  << "*         Welcome to AED Airports            *\n"
+                  << "*                                            *\n"
+                  << "*     1) NETWORK STATISTICS                  *\n"
+                  << "*     2) BEST FLIGHT OPTION                  *\n"
+                  << "*     3) BEST FLIGHT OPTION WITH FILTERS     *\n"
+                  << "*     0) EXIT                                *\n"
+                  << "*                                            *\n"
+                  << "**********************************************\n"
+                  << "Option: ";
+        int option;
+        do{
+            std::cin >> option;
+            switch(option) {
+                case 1: {
+                    StatisticsMenu statisticsMenu;
+                    statisticsMenu.display();
+                    break;
+                }
+                case 2: {
+                    FlightTest flightTest;
+                    flightTest.display();
+                    break;
+                }
+                case 3: {
+                    break;
+                }
+                case 0: exit(0);
+                default: std::cout << "Invalid option, please try again: ";
+            }
+        } while(option != 0 && option != 1 && option != 2 && option != 3);
     }
 };
 
