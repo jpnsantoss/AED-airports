@@ -42,7 +42,11 @@ public:
                     std::cout << "Invalid choice. Please try again.\n";
                     return;
             }
-        } else if (filterChoice != 2) {
+        }
+        else if (filterChoice == 2) {
+            flightController = new FlightController();
+        }
+        else {
             std::cout << "Invalid choice. Please try again.\n";
             return;
         }
