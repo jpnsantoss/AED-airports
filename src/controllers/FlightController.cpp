@@ -366,7 +366,7 @@ size_t FlightController::getTotalFlights() const {
 
 size_t FlightController::getNumberOfDestinationAirports(const Airport& airport) const {
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
-    if (origin == NULL) {
+    if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
     }
     return origin->getAdj().size();
@@ -374,7 +374,7 @@ size_t FlightController::getNumberOfDestinationAirports(const Airport& airport) 
 
 size_t FlightController::getNumberOfDestinationCountries(const Airport& airport) const {
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
-    if (origin == NULL) {
+    if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
     }
     std::set<std::string> destinationCountries;
@@ -387,7 +387,7 @@ size_t FlightController::getNumberOfDestinationCountries(const Airport& airport)
 
 size_t FlightController::getNumberOfDestinationCities(const Airport& airport) const {
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
-    if (origin == NULL) {
+    if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
     }
     std::set<std::string> destinationCities;
@@ -396,4 +396,81 @@ size_t FlightController::getNumberOfDestinationCities(const Airport& airport) co
         destinationCities.insert(destinationAirport.getCity());
     }
     return destinationCities.size();
+}
+
+int FlightController::getNumberOfReachableAirportsWithMaxStops(const Airport& airport, int maxStops) const {
+    Vertex<Airport>* origin = airportGraph.findVertex(airport);
+    if (origin == nullptr) {
+        throw std::runtime_error("Airport not found");
+    }
+    std::queue<std::pair<Vertex<Airport>*, int>> queue;
+    std::set<Vertex<Airport>*> visited;
+    queue.push({origin, 0});
+    visited.insert(origin);
+    int reachableAirports = 0;
+    while (!queue.empty()) {
+        std::pair<Vertex<Airport>*, int> current = queue.front();
+        queue.pop();
+        if (current.second <= maxStops) {
+            reachableAirports++;
+            for (const Edge<Airport>& edge: current.first->getAdj()) {
+                Vertex<Airport>* neighbor = edge.getDest();
+                if (visited.find(neighbor) == visited.end()) {
+                    queue.push({neighbor, current.second + 1});
+                    visited.insert(neighbor);
+                }
+            }
+        }
+    }
+    return reachableAirports-1;
+}
+
+size_t FlightController::getNumberOfReachableCountriesWithMaxStops(const Airport& airport, int maxStops) const {
+    Vertex<Airport>* origin = airportGraph.findVertex(airport);
+    if (origin == nullptr) {
+        throw std::runtime_error("Airport not found");
+    }
+    std::queue<std::pair<Vertex<Airport>*, int>> queue;
+    std::set<Vertex<Airport>*> visited;
+    queue.push({origin, 0});
+    visited.insert(origin);
+    std::set<std::string> reachableCountries;
+    while (!queue.empty()) {
+        std::pair<Vertex<Airport>*, int> current = queue.front();
+        queue.pop();
+        if (current.second <= maxStops) {
+            for (const Edge<Airport>& edge: current.first->getAdj()) {
+                Vertex<Airport>* neighbor = edge.getDest();
+                queue.push({neighbor, current.second + 1});
+                visited.insert(neighbor);
+                reachableCountries.insert(neighbor->getInfo().getCountry());
+            }
+        }
+    }
+    return reachableCountries.size();
+}
+
+size_t FlightController::getNumberOfReachableCitiesWithMaxStops(const Airport& airport, int maxStops) const {
+    Vertex<Airport>* origin = airportGraph.findVertex(airport);
+    if (origin == nullptr) {
+        throw std::runtime_error("Airport not found");
+    }
+    std::queue<std::pair<Vertex<Airport>*, int>> queue;
+    std::set<Vertex<Airport>*> visited;
+    queue.push({origin, 0});
+    visited.insert(origin);
+    std::set<std::string> reachableCities;
+    while (!queue.empty()) {
+        std::pair<Vertex<Airport>*, int> current = queue.front();
+        queue.pop();
+        if (current.second <= maxStops) {
+            for (const Edge<Airport>& edge: current.first->getAdj()) {
+                Vertex<Airport>* neighbor = edge.getDest();
+                queue.push({neighbor, current.second + 1});
+                visited.insert(neighbor);
+                reachableCities.insert(neighbor->getInfo().getCity());
+            }
+        }
+    }
+    return reachableCities.size();
 }

@@ -53,6 +53,12 @@ public:
     size_t getNumberOfDestinationCountries(const Airport &airport) const;
 
     size_t getNumberOfDestinationCities(const Airport &airport) const;
+
+    int getNumberOfReachableAirportsWithMaxStops(const Airport &airport, int maxStops) const;
+
+    size_t getNumberOfReachableCountriesWithMaxStops(const Airport &airport, int maxStops) const;
+
+    size_t getNumberOfReachableCitiesWithMaxStops(const Airport &airport, int maxStops) const;
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H
