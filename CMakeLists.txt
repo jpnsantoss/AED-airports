@@ -23,6 +23,8 @@ add_executable(Project_AED_Airports src/main.cpp
         src/controllers/FlightController.cpp
         src/controllers/FlightController.h
         src/views/FlightTest.h
+        src/views/StatisticsMenu.h
+        src/views/StatisticsMenu.cpp
 )
 
 # Doxygen Build
