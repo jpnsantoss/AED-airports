@@ -353,3 +353,20 @@ vector<vector<Airport>> FlightController::getBestFlightOption(FlightOption sourc
 
     return res;
 }
+
+size_t FlightController::getTotalAirports() const {
+    return airportGraph.getVertexSet().size();
+}
+
+size_t FlightController::getTotalFlights() const {
+    Dataset* dataset = Dataset::getInstance();
+    return dataset->getFlights().size();
+}
+
+size_t FlightController::getNumberOfDestinations(const Airport& airport) const {
+    Vertex<Airport>* origin = airportGraph.findVertex(airport);
+    if (origin == NULL) {
+        throw std::runtime_error("Airport not found");
+    }
+    return origin->getAdj().size();
+}

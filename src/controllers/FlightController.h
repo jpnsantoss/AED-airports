@@ -42,6 +42,13 @@ public:
                         const string &destination);
 
     void findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res);
+
+    size_t getTotalAirports() const;
+
+    size_t getTotalFlights() const;
+
+    size_t getNumberOfDestinations(const Airport &airport) const;
+
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H
