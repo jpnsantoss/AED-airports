@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <set>
 #include <queue>
 #include <map>
 #include <algorithm>
@@ -363,10 +364,36 @@ size_t FlightController::getTotalFlights() const {
     return dataset->getFlights().size();
 }
 
-size_t FlightController::getNumberOfDestinations(const Airport& airport) const {
+size_t FlightController::getNumberOfDestinationAirports(const Airport& airport) const {
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == NULL) {
         throw std::runtime_error("Airport not found");
     }
     return origin->getAdj().size();
+}
+
+size_t FlightController::getNumberOfDestinationCountries(const Airport& airport) const {
+    Vertex<Airport>* origin = airportGraph.findVertex(airport);
+    if (origin == NULL) {
+        throw std::runtime_error("Airport not found");
+    }
+    std::set<std::string> destinationCountries;
+    for (const Edge<Airport>& edge : origin->getAdj()) {
+        const Airport& destinationAirport = edge.getDest()->getInfo();
+        destinationCountries.insert(destinationAirport.getCountry());
+    }
+    return destinationCountries.size();
+}
+
+size_t FlightController::getNumberOfDestinationCities(const Airport& airport) const {
+    Vertex<Airport>* origin = airportGraph.findVertex(airport);
+    if (origin == NULL) {
+        throw std::runtime_error("Airport not found");
+    }
+    std::set<std::string> destinationCities;
+    for (const Edge<Airport>& edge : origin->getAdj()) {
+        const Airport& destinationAirport = edge.getDest()->getInfo();
+        destinationCities.insert(destinationAirport.getCity());
+    }
+    return destinationCities.size();
 }
