@@ -13,21 +13,16 @@
 class MainMenu : public Menu {
 public:
     void display() override {
-        Dataset* dataset = Dataset::getInstance();
+        system("clear");
         cout << "Welcome to AED Airports!" << endl;
-
-        cout << dataset->getAirlines().size() << endl;
-        cout << dataset->getAirports().size() << endl;
-        cout << dataset->getFlights().size() << endl;
-
         // Add a new option for the flight test
-        cout << "4. Flight Test\n";
+        cout << "1. Flight Test\n";
         cout << "Enter your choice: ";
         int choice;
         cin >> choice;
 
         // If the flight test option is selected, create a new FlightTest object and call its display method
-        if (choice == 4) {
+        if (choice == 1) {
             FlightTest flightTest;
             flightTest.display();
         }

@@ -8,10 +8,12 @@
 #include "controllers/filters/MinimizeAirlinesFlightController.h"
 #include <iostream>
 #include <vector>
+#include <limits>
 
 class FlightTest : public Menu {
 public:
     void display() override {
+        system("clear");
         FlightController* flightController = nullptr;
         int filterChoice;
         std::cout << "Before we start, do you want to add any filter to your search? (1 for yes, 2 for no): ";
@@ -26,12 +28,14 @@ public:
 
             switch (filterChoice) {
                 case 1: {
+                    system("clear");
                     std::vector<std::string> airlines;
                     std::string airline;
                     std::cout << "Enter airlines (type 'done' when finished): ";
                     while (std::cin >> airline && airline != "done") {
                         airlines.push_back(airline);
                     }
+                    cout << "Generating new graph...\n";
                     flightController = new AirlineFilterFlightController(airlines);
                     break;
                 }
@@ -56,7 +60,9 @@ public:
         double sourceLat, sourceLon, destLat, destLon;
 
         while (true) {
-            printSourceMenu();
+            system("clear");
+            std::cout << "Choose source option:\n";
+            printOptionsMenu();
             std::cin >> sourceChoice;
 
             switch (sourceChoice) {
@@ -82,8 +88,9 @@ public:
                     std::cout << "Invalid choice. Please try again.\n";
                     continue;
             }
-
-            printDestinationMenu();
+            system("clear");
+            std::cout << "Choose destination option:\n";
+            printOptionsMenu();
             std::cin >> destinationChoice;
 
             switch (destinationChoice) {
@@ -109,16 +116,19 @@ public:
                     std::cout << "Invalid choice. Please try again.\n";
                     continue;
             }
-
+            system("clear");
             FlightOption sourceOption = static_cast<FlightOption>(sourceChoice - 1);
             FlightOption destinationOption = static_cast<FlightOption>(destinationChoice - 1);
             displayPaths(flightController->getBestFlightOption(sourceOption, source, destinationOption, destination));
+            std::cout << "Press enter to continue...";
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get();
         }
     }
 
 private:
-    void printSourceMenu() {
-        std::cout << "Choose source option:\n";
+    void printOptionsMenu() {
+
         std::cout << "1. By airport code\n";
         std::cout << "2. By airport name\n";
         std::cout << "3. By city\n";
@@ -127,20 +137,13 @@ private:
         std::cout << "Enter your choice: ";
     }
 
-    void printDestinationMenu() {
-        std::cout << "Choose destination option:\n";
-        std::cout << "1. By airport code\n";
-        std::cout << "2. By airport name\n";
-        std::cout << "3. By city\n";
-        std::cout << "4. By location\n";
-        std::cout << "5. Exit\n";
-        std::cout << "Enter your choice: ";
-    }
+
 
     void displayPaths(const std::vector<std::vector<Airport>>& paths) {
         if (paths.empty()) {
             std::cout << "No path found\n";
         } else {
+            cout << "Possible paths:\n";
             for (const auto& path : paths) {
                 for (size_t i = 0; i < path.size(); ++i) {
                     std::cout << path[i].getAirportName() << " (" << path[i].getCity() << ")";

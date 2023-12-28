@@ -13,7 +13,6 @@ add_executable(Project_AED_Airports src/main.cpp
         src/models/Flight.cpp
         src/models/Flight.h
         src/utils/Graph.h
-        src/views/Menu.cpp
         src/views/Menu.h
         src/views/MainMenu.h
         src/utils/Dataset.cpp
@@ -27,9 +26,6 @@ add_executable(Project_AED_Airports src/main.cpp
         src/controllers/filters/MinimizeAirlinesFlightController.h
         src/controllers/filters/AirlineFilterFlightController.cpp
         src/controllers/filters/AirlineFilterFlightController.h
-        src/views/bestOption/FilterSelectionView.h
-        src/views/bestOption/SourceSelectionView.h
-        src/views/bestOption/DestinationSelectionView.h
 )
 
 # Doxygen Build
