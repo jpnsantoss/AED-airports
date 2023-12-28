@@ -94,6 +94,92 @@ vector<Airport> FlightController::getNearestAirports(const Location &location) {
     return nearestAirports;
 }
 
+int FlightController::numberOfFlightsOutAirport(string &identifier) {
+    int num = 0;
+    Dataset* dataset = Dataset::getInstance();
+
+    for (char& c: identifier)
+        c = (char)toupper(c);
+    Airport airport = findAirport(identifier);
+
+    for (const Flight& f : dataset->getFlights()) {
+        if(f.getSource().getAirportCode() == airport.getAirportCode()) {
+            num++;
+        }
+    }
+    return num;
+}
+
+set<Airline> FlightController::setOfFlightsOutAirport(string &identifier) {
+    set<Airline> airlines;
+    Dataset* dataset = Dataset::getInstance();
+
+    for (char& c: identifier)
+        c = (char)toupper(c);
+    Airport airport = findAirport(identifier);
+
+    for (const Flight& f : dataset->getFlights()) {
+        if(f.getSource().getAirportCode() == airport.getAirportCode()) {
+            airlines.insert(f.getAirline());
+        }
+    }
+
+    return airlines;
+}
+
+int FlightController::numberOfFlightsPerAirline(string &identifier) {
+    int num = 0;
+    Dataset* dataset = Dataset::getInstance();
+    for (char& c: identifier)
+        c = (char)toupper(c);
+
+    for(const Flight& f: dataset->getFlights()){
+        if(f.getAirline().getCode() == identifier)
+            num++;
+    }
+
+    return num;
+}
+
+int FlightController::numberOfFlightsPerCity(string &identifier) {
+    int num = 0;
+    Dataset* dataset = Dataset::getInstance();
+
+    for(const Flight& f: dataset->getFlights()){
+        if(f.getSource().getCity() == identifier || f.getTarget().getCity() == identifier)
+            num++;
+    }
+
+    return num;
+}
+
+set<string> FlightController::numberOfCountriesForThisAirport(string &identifier) {
+    Dataset* dataset = Dataset::getInstance();
+    set<string> countries;
+
+    for (char& c: identifier)
+        c = (char)toupper(c);
+
+    for(const Flight& f: dataset->getFlights()){
+        if(f.getSource().getAirportCode() == identifier)
+            countries.insert(f.getTarget().getCountry());
+    }
+
+    return countries;
+}
+
+set<string> FlightController::numberOfCountriesForThisCity(string &identifier) {
+    Dataset* dataset = Dataset::getInstance();
+    set<string> countries;
+
+    for(const Flight& f: dataset->getFlights()){
+        if(f.getSource().getCity() == identifier)
+            countries.insert(f.getTarget().getCountry());
+    }
+
+    return countries;
+}
+
 vector<vector<Airport>> FlightController::getShortestPathsBFS(const Airport &origin, const Airport &destination) {
     map<Vertex<Airport>*, vector<Vertex<Airport>*>> prev;
     queue<Vertex<Airport>*> queue;
