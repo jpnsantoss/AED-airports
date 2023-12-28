@@ -21,7 +21,7 @@ add_executable(Project_AED_Airports src/main.cpp
         src/models/Location.h
         src/controllers/FlightController.cpp
         src/controllers/FlightController.h
-        src/views/FlightTest.h
+        src/views/BestOption.h
         src/controllers/filters/MinimizeAirlinesFlightController.cpp
         src/controllers/filters/MinimizeAirlinesFlightController.h
         src/controllers/filters/AirlineFilterFlightController.cpp

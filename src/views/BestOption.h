@@ -1,6 +1,6 @@
-// FlightTest.h
-#ifndef PROJECT_AED_AIRPORTS_FLIGHTTEST_H
-#define PROJECT_AED_AIRPORTS_FLIGHTTEST_H
+// BestOption.h
+#ifndef PROJECT_AED_AIRPORTS_BESTOPTION_H
+#define PROJECT_AED_AIRPORTS_BESTOPTION_H
 
 #include "Menu.h"
 #include "controllers/FlightController.h"
@@ -10,7 +10,7 @@
 #include <vector>
 #include <limits>
 
-class FlightTest : public Menu {
+class BestOption : public Menu {
 public:
     void display() override {
         system("clear");
@@ -175,4 +175,4 @@ private:
     }
 };
 
-#endif //PROJECT_AED_AIRPORTS_FLIGHTTEST_H
+#endif //PROJECT_AED_AIRPORTS_BESTOPTION_H
