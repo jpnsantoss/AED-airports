@@ -214,18 +214,21 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const Airpor
     return reachableCities.size();
 }
 
-void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<Airport>& maxPath) {
+void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<std::pair<Airport, Airport>>& maxPaths) {
     v->setProcessing(true);
     path.push_back(v->getInfo());
 
     if (path.size() > maxStops) {
         maxStops = path.size();
-        maxPath = path;
+        maxPaths.clear();
+        maxPaths.push_back(std::make_pair(path.front(), path.back()));
+    } else if (path.size() == maxStops) {
+        maxPaths.push_back(std::make_pair(path.front(), path.back()));
     }
 
     for (const Edge<Airport>& e : v->getAdj()) {
         if (!e.getDest()->isProcessing()) {
-            dfsAllPaths(e.getDest(), path, maxStops, maxPath);
+            dfsAllPaths(e.getDest(), path, maxStops, maxPaths);
         }
     }
 
@@ -233,19 +236,20 @@ void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, 
     path.pop_back();
 }
 
-std::pair<Airport, Airport> StatisticsController::getMaximumTrip() {
-    std::vector<Airport> path, maxPath;
+std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips() {
+    std::vector<Airport> path;
+    std::vector<std::pair<Airport, Airport>> maxPaths;
     int maxStops = 0;
 
     for (Vertex<Airport>* v : airportGraph.getVertexSet()) {
         if (!v->isProcessing()) {
-            dfsAllPaths(v, path, maxStops, maxPath);
+            dfsAllPaths(v, path, maxStops, maxPaths);
         }
     }
 
-    if (maxPath.empty()) {
+    if (maxPaths.empty()) {
         throw std::runtime_error("No path found");
     }
 
-    return std::make_pair(maxPath.front(), maxPath.back());
+    return maxPaths;
 }
