@@ -42,7 +42,7 @@ public:
 
     static set<string> numberOfCountriesForThisCity(string &identifier);
 
-    pair<Airport, Airport> getMaximumTrip();
+    vector<pair<Airport, Airport>> getMaximumTrips();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H
