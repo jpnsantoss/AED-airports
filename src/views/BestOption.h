@@ -4,8 +4,8 @@
 
 #include "Menu.h"
 #include "controllers/FlightController.h"
-#include "controllers/filters/AirlineFilterFlightController.h"
-#include "controllers/filters/MinimizeAirlinesFlightController.h"
+#include "controllers/filters/AirlineFilterController.h"
+#include "controllers/filters/MinimizeAirlinesController.h"
 #include <iostream>
 #include <vector>
 #include <limits>
@@ -14,7 +14,7 @@ class BestOption : public Menu {
 public:
     void display() override {
         system("clear");
-        FlightController* flightController = nullptr;
+        BestOptionController* optionController = nullptr;
         int filterChoice;
         std::cout << "Before we start, do you want to add any filter to your search? (1 for yes, 2 for no): ";
         std::cin >> filterChoice;
@@ -36,11 +36,11 @@ public:
                         airlines.push_back(airline);
                     }
                     cout << "Generating new graph...\n";
-                    flightController = new AirlineFilterFlightController(airlines);
+                    optionController = new AirlineFilterController(airlines);
                     break;
                 }
                 case 2:
-                    flightController = new MinimizeAirlinesFlightController();
+                    optionController = new MinimizeAirlinesController();
                     break;
                 default:
                     std::cout << "Invalid choice. Please try again.\n";
@@ -48,7 +48,7 @@ public:
             }
         }
         else if (filterChoice == 2) {
-            flightController = new FlightController();
+            optionController = new BestOptionController();
         }
         else {
             std::cout << "Invalid choice. Please try again.\n";
@@ -115,9 +115,9 @@ public:
                     continue;
             }
             system("clear");
-            FlightOption sourceOption = static_cast<FlightOption>(sourceChoice - 1);
-            FlightOption destinationOption = static_cast<FlightOption>(destinationChoice - 1);
-            displayPaths(flightController->getBestFlightOption(sourceOption, source, destinationOption, destination));
+            auto sourceOption = static_cast<FlightOption>(sourceChoice - 1);
+            auto destinationOption = static_cast<FlightOption>(destinationChoice - 1);
+            displayPaths(optionController->getBestFlightOption(sourceOption, source, destinationOption, destination));
             std::cout << "Press enter to continue...";
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();

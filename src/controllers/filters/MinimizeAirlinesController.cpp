@@ -1,8 +1,8 @@
-// MinimizeAirlinesFlightController.cpp
-#include "MinimizeAirlinesFlightController.h"
+// MinimizeAirlinesController.cpp
+#include "MinimizeAirlinesController.h"
 #include <stdexcept>
 #include <set>
-vector<vector<Airport>> MinimizeAirlinesFlightController::getShortestPathsBFS(const Airport &origin, const Airport &destination) {
+vector<vector<Airport>> MinimizeAirlinesController::getShortestPathsBFS(const Airport &origin, const Airport &destination) {
     map<Vertex<Airport>*, vector<Vertex<Airport>*>> prev;
     map<Vertex<Airport>*, set<string>> airlinesUsed;
     queue<Vertex<Airport>*> queue;

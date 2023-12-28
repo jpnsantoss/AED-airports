@@ -2,10 +2,10 @@
 // Created by jpsantos on 26-12-2023.
 //
 
-// AirlineFilterFlightController.cpp
-#include "AirlineFilterFlightController.h"
+// AirlineFilterController.cpp
+#include "AirlineFilterController.h"
 
-AirlineFilterFlightController::AirlineFilterFlightController(const std::vector<std::string>& airlines) {
+AirlineFilterController::AirlineFilterController(const std::vector<std::string>& airlines) {
     Dataset* dataset = Dataset::getInstance();
     Graph<Airport> originalGraph = dataset->getAirportGraph();
 
