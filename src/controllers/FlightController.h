@@ -44,22 +44,6 @@ public:
 
     void findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res);
 
-    size_t getTotalAirports() const;
-
-    size_t getTotalFlights() const;
-
-    size_t getNumberOfDestinationAirports(const Airport &airport) const;
-
-    size_t getNumberOfDestinationCountries(const Airport &airport) const;
-
-    size_t getNumberOfDestinationCities(const Airport &airport) const;
-
-    int getNumberOfReachableAirportsWithMaxStops(const Airport &airport, int maxStops) const;
-
-    size_t getNumberOfReachableCountriesWithMaxStops(const Airport &airport, int maxStops) const;
-
-    size_t getNumberOfReachableCitiesWithMaxStops(const Airport &airport, int maxStops) const;
-
     int numberOfFlightsOutAirport(string &identifier);
     set<Airline> setOfFlightsOutAirport(string &identifier);
     int numberOfFlightsPerCity(string &identifier);
