@@ -21,7 +21,6 @@ public:
                   << "*                                            *\n"
                   << "*     1) NETWORK STATISTICS                  *\n"
                   << "*     2) BEST FLIGHT OPTION                  *\n"
-                  << "*     3) BEST FLIGHT OPTION WITH FILTERS     *\n"
                   << "*     0) EXIT                                *\n"
                   << "*                                            *\n"
                   << "**********************************************\n"
@@ -38,9 +37,6 @@ public:
                 case 2: {
                     FlightTest flightTest;
                     flightTest.display();
-                    break;
-                }
-                case 3: {
                     break;
                 }
                 case 0: exit(0);
