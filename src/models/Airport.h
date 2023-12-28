@@ -35,8 +35,6 @@ public:
     void setCountry(const string &country);
     void setLocation(const Location &location);
 
-    // Distance calculation
-    double calculateDistanceTo(const Airport &other) const;
     bool operator == (const Airport &other) const;
     friend ostream & operator << (ostream &os, Airport &airport);
 };

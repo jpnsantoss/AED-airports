@@ -13,7 +13,6 @@ add_executable(Project_AED_Airports src/main.cpp
         src/models/Flight.cpp
         src/models/Flight.h
         src/utils/Graph.h
-        src/views/Menu.cpp
         src/views/Menu.h
         src/views/MainMenu.h
         src/utils/Dataset.cpp
@@ -23,6 +22,10 @@ add_executable(Project_AED_Airports src/main.cpp
         src/controllers/FlightController.cpp
         src/controllers/FlightController.h
         src/views/FlightTest.h
+        src/controllers/filters/MinimizeAirlinesFlightController.cpp
+        src/controllers/filters/MinimizeAirlinesFlightController.h
+        src/controllers/filters/AirlineFilterFlightController.cpp
+        src/controllers/filters/AirlineFilterFlightController.h
         src/views/StatisticsMenu.h
         src/views/StatisticsMenu.cpp
 )

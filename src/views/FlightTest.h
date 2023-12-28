@@ -4,18 +4,63 @@
 
 #include "Menu.h"
 #include "controllers/FlightController.h"
+#include "controllers/filters/AirlineFilterFlightController.h"
+#include "controllers/filters/MinimizeAirlinesFlightController.h"
 #include <iostream>
 #include <vector>
+#include <limits>
 
 class FlightTest : public Menu {
 public:
     void display() override {
-        FlightController flightController;
+        system("clear");
+        FlightController* flightController = nullptr;
+        int filterChoice;
+        std::cout << "Before we start, do you want to add any filter to your search? (1 for yes, 2 for no): ";
+        std::cin >> filterChoice;
+
+        if (filterChoice == 1) {
+            std::cout << "Choose filter option:\n";
+            std::cout << "1. Airline filter\n";
+            std::cout << "2. Minimize airlines filter\n";
+            std::cout << "Enter your choice: ";
+            std::cin >> filterChoice;
+
+            switch (filterChoice) {
+                case 1: {
+                    system("clear");
+                    std::vector<std::string> airlines;
+                    std::string airline;
+                    std::cout << "Enter airlines (type 'done' when finished): ";
+                    while (std::cin >> airline && airline != "done") {
+                        airlines.push_back(airline);
+                    }
+                    cout << "Generating new graph...\n";
+                    flightController = new AirlineFilterFlightController(airlines);
+                    break;
+                }
+                case 2:
+                    flightController = new MinimizeAirlinesFlightController();
+                    break;
+                default:
+                    std::cout << "Invalid choice. Please try again.\n";
+                    return;
+            }
+        }
+        else if (filterChoice == 2) {
+            flightController = new FlightController();
+        }
+        else {
+            std::cout << "Invalid choice. Please try again.\n";
+            return;
+        }
+
         int sourceChoice, destinationChoice;
         std::string source, destination;
         double sourceLat, sourceLon, destLat, destLon;
 
         while (true) {
+            system("clear");
             printSourceMenu();
             std::cin >> sourceChoice;
 
@@ -42,7 +87,7 @@ public:
                     std::cout << "Invalid choice. Please try again.\n";
                     continue;
             }
-
+            system("clear");
             printDestinationMenu();
             std::cin >> destinationChoice;
 
@@ -69,10 +114,13 @@ public:
                     std::cout << "Invalid choice. Please try again.\n";
                     continue;
             }
-
+            system("clear");
             FlightOption sourceOption = static_cast<FlightOption>(sourceChoice - 1);
             FlightOption destinationOption = static_cast<FlightOption>(destinationChoice - 1);
-            displayPaths(flightController.getBestFlightOption(sourceOption, source, destinationOption, destination));
+            displayPaths(flightController->getBestFlightOption(sourceOption, source, destinationOption, destination));
+            std::cout << "Press enter to continue...";
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get();
         }
     }
 
@@ -113,6 +161,7 @@ private:
         if (paths.empty()) {
             std::cout << "No path found\n";
         } else {
+            cout << "Possible paths:\n";
             for (const auto& path : paths) {
                 for (size_t i = 0; i < path.size(); ++i) {
                     std::cout << path[i].getAirportName() << " (" << path[i].getCity() << ")";

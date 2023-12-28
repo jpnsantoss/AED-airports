@@ -2,6 +2,7 @@
 #include "views/MainMenu.h"
 #include "utils/Dataset.h"
 int main() {
+    cout << "Loading dataset..." << endl;
     Dataset* dataset = Dataset::getInstance();
     Menu* menu;
     // Point to main menu
