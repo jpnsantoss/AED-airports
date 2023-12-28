@@ -4,12 +4,14 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <set>
 #include <queue>
 #include <map>
 #include <algorithm>
 #include <stdexcept>
 #include <limits>
 #include "FlightController.h"
+
 FlightController::FlightController() {
     Dataset* dataset = Dataset::getInstance();
     airportGraph = dataset->getAirportGraph();

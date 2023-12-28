@@ -50,6 +50,7 @@ public:
     int numberOfFlightsPerAirline(string &identifier);
     set<string> numberOfCountriesForThisAirport(string &identifier);
     set<string> numberOfCountriesForThisCity(string &identifier);
+
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H
