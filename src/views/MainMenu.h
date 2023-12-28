@@ -6,7 +6,7 @@
 #define PROJECT_AED_AIRPORTS_MAINMENU_H
 
 #include "Menu.h"
-#include "FlightTest.h" // Include the FlightTest header file
+#include "BestOption.h" // Include the BestOption header file
 #include "StatisticsMenu.h"
 #include <iostream>
 #include "utils/Dataset.h"
@@ -35,7 +35,7 @@ public:
                     break;
                 }
                 case 2: {
-                    FlightTest flightTest;
+                    BestOption flightTest;
                     flightTest.display();
                     break;
                 }
