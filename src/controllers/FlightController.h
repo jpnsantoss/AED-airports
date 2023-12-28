@@ -8,6 +8,7 @@
 #include "utils/Dataset.h"
 #include "models/Airport.h"
 #include <vector>
+#include <set>
 
 enum class FlightOption {
     ByAirportCode,
@@ -42,6 +43,13 @@ public:
                         const string &destination);
 
     void findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res);
+
+    int numberOfFlightsOutAirport(string &identifier);
+    set<Airline> setOfFlightsOutAirport(string &identifier);
+    int numberOfFlightsPerCity(string &identifier);
+    int numberOfFlightsPerAirline(string &identifier);
+    set<string> numberOfCountriesForThisAirport(string &identifier);
+    set<string> numberOfCountriesForThisCity(string &identifier);
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H

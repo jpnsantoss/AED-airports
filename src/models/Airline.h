@@ -29,6 +29,10 @@ public:
     void setName(const string &name);
     void setCallsign(const string &callsign);
     void setCountry(const string &country);
+
+    bool operator<(const Airline& other) const {
+        return this->code < other.code;
+    }
 };
 
 #endif //PROJECT_AED_AIRPORTS_AIRLINE_H
