@@ -8,6 +8,7 @@
 #include "utils/Dataset.h"
 #include "models/Airport.h"
 #include <vector>
+#include <set>
 
 enum class FlightOption {
     ByAirportCode,
@@ -43,7 +44,6 @@ public:
 
     void findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res);
 
-
     size_t getTotalAirports() const;
 
     size_t getTotalFlights() const;
@@ -59,6 +59,14 @@ public:
     size_t getNumberOfReachableCountriesWithMaxStops(const Airport &airport, int maxStops) const;
 
     size_t getNumberOfReachableCitiesWithMaxStops(const Airport &airport, int maxStops) const;
+
+    int numberOfFlightsOutAirport(string &identifier);
+    set<Airline> setOfFlightsOutAirport(string &identifier);
+    int numberOfFlightsPerCity(string &identifier);
+    int numberOfFlightsPerAirline(string &identifier);
+    set<string> numberOfCountriesForThisAirport(string &identifier);
+    set<string> numberOfCountriesForThisCity(string &identifier);
+
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H

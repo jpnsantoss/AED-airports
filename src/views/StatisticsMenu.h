@@ -39,7 +39,7 @@ public:
                     break;
                 }
                 case 2: flightsOutAirport(); break;
-                case 3: flightsPerCity(); break;
+                case 3: flightsPerCityAirline(); break;
                 case 4: airportToCountries(); break;
                 case 5: {
                     break;
@@ -64,9 +64,10 @@ public:
     }
 private:
     void flightsOutAirport();
-    void flightsPerCity();
+    void flightsPerCityAirline();
     void airportToCountries();
     static void backToMain();
+    void printFooterOption();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSMENU_H
