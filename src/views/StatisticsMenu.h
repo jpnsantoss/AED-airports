@@ -6,7 +6,9 @@
 #define PROJECT_AED_AIRPORTS_STATISTICSMENU_H
 
 #include <iostream>
+#include <set>
 #include "Menu.h"
+#include "models/Airline.h"
 
 class StatisticsMenu : public Menu {
 public:

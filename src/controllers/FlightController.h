@@ -10,47 +10,15 @@
 #include <vector>
 #include <set>
 
-enum class FlightOption {
-    ByAirportCode,
-    ByAirportName,
-    ByCity,
-    ByLocation
-};
+
 
 class FlightController {
 
-protected:
-    Graph<Airport> airportGraph;
 public:
-    FlightController();
-
-    vector<Airport> findAirportsByName(const string &name);
-    vector<Airport> findAirportsByCity(const string &city);
-
-
-    Airport findAirport(const string &identifier);
-
-    virtual vector<vector<Airport>> getShortestPathsBFS(const Airport &origin, const Airport &destination);
-
-    void buildPaths(Vertex<Airport> *origin, Vertex<Airport> *destination,
-                    map<Vertex<Airport> *, std::vector<Vertex<Airport> *>> &prev, vector<Airport> &path,
-                    vector<std::vector<Airport>> &paths);
-
-    vector<Airport> getNearestAirports(const Location &location);
-
-    vector<vector<Airport>>
-    getBestFlightOption(FlightOption sourceOption, const string &source, FlightOption destinationOption,
-                        const string &destination);
-
-    void findBestFlightPaths(const string &source, const string &destination, vector<vector<Airport>> &res);
-
-    int numberOfFlightsOutAirport(string &identifier);
-    set<Airline> setOfFlightsOutAirport(string &identifier);
-    int numberOfFlightsPerCity(string &identifier);
-    int numberOfFlightsPerAirline(string &identifier);
-    set<string> numberOfCountriesForThisAirport(string &identifier);
-    set<string> numberOfCountriesForThisCity(string &identifier);
-
+    static vector<Airport> findAirportsByName(const string &name);
+    static vector<Airport> findAirportsByCity(const string &city);
+    static Airport findAirport(const string &identifier);
+    static vector<Airport> getNearestAirports(const Location &location);
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H

@@ -14,9 +14,9 @@ private:
 public:
     StatisticsController();
 
-    size_t getTotalAirports() const;
+    static size_t getTotalAirports() ;
 
-    size_t getTotalFlights() const;
+    static size_t getTotalFlights() ;
 
     size_t getNumberOfDestinationAirports(const Airport &airport) const;
 
@@ -29,6 +29,20 @@ public:
     size_t getNumberOfReachableCountriesWithMaxStops(const Airport &airport, int maxStops) const;
 
     size_t getNumberOfReachableCitiesWithMaxStops(const Airport &airport, int maxStops) const;
+
+    static set<string> numberOfCountriesForThisAirport(string &identifier);
+
+    static int numberOfFlightsPerAirline(string &identifier);
+
+    static int numberOfFlightsPerCity(string &identifier);
+
+    static set<Airline> setOfFlightsOutAirport(string &identifier);
+
+    static int numberOfFlightsOutAirport(string &identifier);
+
+    static set<string> numberOfCountriesForThisCity(string &identifier);
+
+    pair<Airport, Airport> getMaximumTrip();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H
