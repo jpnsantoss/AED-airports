@@ -11,7 +11,7 @@
 class MainMenu : public Menu {
 public:
     void display() override {
-        system("cls");
+        system("clear");
         std::cout << "**********************************************\n"
                   << "*                                            *\n"
                   << "*         Welcome to AED Airports            *\n"
