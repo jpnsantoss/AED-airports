@@ -11,7 +11,7 @@
 /**
  * @brief Finds an airport by its code.
  * Complexity: O(n), where n is the number of airports in the dataset.
- * @param identifier (string) - the code of the airport to find.
+ * @param identifier - the code of the airport to find.
  * @return The found airport.
  */
 Airport FlightController::findAirport(const string &identifier) {
@@ -35,7 +35,7 @@ Airport FlightController::findAirport(const string &identifier) {
 /**
  * @brief Finds all airports with a given name.
  * Complexity: O(n), where n is the number of airports in the dataset.
- * @param name (string) - the name of the airports to find.
+ * @param name - the name of the airports to find.
  * @return A vector containing all the airports found.
  */
 vector<Airport> FlightController::findAirportsByName(const string &name) {
@@ -56,7 +56,7 @@ vector<Airport> FlightController::findAirportsByName(const string &name) {
 /**
  * @brief Finds all airports in a given city.
  * Complexity: O(n), where n is the number of airports in the dataset.
- * @param city (string) - the name of the city to find.
+ * @param city - the name of the city to find.
  * @return A vector containing all the airports found.
  */
 vector<Airport> FlightController::findAirportsByCity(const string &city) {
@@ -76,7 +76,7 @@ vector<Airport> FlightController::findAirportsByCity(const string &city) {
 /**
  * @brief Gets the nearest airports to a given location.
  * Complexity: O(n), where n is the number of airports in the dataset.
- * @param location (Location) - the location to find the nearest airports from.
+ * @param location - the location to find the nearest airports from.
  * @return A vector containing all the airports found.
  */
 vector<Airport> FlightController::getNearestAirports(const Location &location) {

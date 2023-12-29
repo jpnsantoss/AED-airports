@@ -33,7 +33,7 @@ size_t StatisticsController::getTotalFlights() {
 /**
  * @brief Gets the number of flights out of a specific airport and the associated airlines.
  * Complexity: O(n), where n is the number of flights from the airport.
- * @param identifier (string) - the origin airport code.
+ * @param identifier - the origin airport code.
  * @return The number of flights.
  */
 int StatisticsController::numberOfFlightsOutAirport(string &identifier) {
@@ -55,7 +55,7 @@ int StatisticsController::numberOfFlightsOutAirport(string &identifier) {
 /**
  * @brief Gets a set of airlines the operate flights out of a specific airport.
  * Complexity: O(n), where n is the number of flights in the dataset.
- * @param identifier (string) - the origin airport code.
+ * @param identifier - the origin airport code.
  * @return A set of airlines operating flights out of the specified airport.
  */
 set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
@@ -78,7 +78,7 @@ set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
 /**
  * @brief Gets the number of flights operated by a specific airline.
  * Complexity: O(n), where n is the number of flights in the dataset.
- * @param identifier (string) - the airline code.
+ * @param identifier - the airline code.
  * @return The number of flights operated by the specified airline.
  */
 int StatisticsController::numberOfFlightsPerAirline(string &identifier) {
@@ -98,7 +98,7 @@ int StatisticsController::numberOfFlightsPerAirline(string &identifier) {
 /**
  * @brief Gets the number of flights involving a specific city (as origin or destination).
  * Complexity: O(n), where n is the number of flights in the dataset.
- * @param identifier (string) - the name of the city.
+ * @param identifier - the name of the city.
  * @return The number of flights involving the specified city.
  */
 int StatisticsController::numberOfFlightsPerCity(string &identifier) {
@@ -116,7 +116,7 @@ int StatisticsController::numberOfFlightsPerCity(string &identifier) {
 /**
  * @brief Gets a set of the countries that a specific airport flies to.
  * Complexity: O(n), where n is the code of adjacent airports.
- * @param identifier (string) - the origin airport code.
+ * @param identifier - the origin airport code.
  * @return A set of countries that the specified airport flies to.
  */
 set<string> StatisticsController::numberOfCountriesForThisAirport(string &identifier) {
@@ -137,7 +137,7 @@ set<string> StatisticsController::numberOfCountriesForThisAirport(string &identi
 /**
  * @brief Gets the number of destination airports for a given airport.
  * Complexity: O(n), where n is the number of adjacent airports.
- * @param code (string) - the origin airport code.
+ * @param code - the origin airport code.
  * @return The number of destination airports.
  */
 set<string> StatisticsController::numberOfCountriesForThisCity(string &identifier) {
@@ -155,7 +155,7 @@ set<string> StatisticsController::numberOfCountriesForThisCity(string &identifie
 /**
  * @brief Gets the number of destination airports for a given airport.
  * Complexity: O(n), where n is the number of adjacent airports.
- * @param code (string) - the origin airport code.
+ * @param code - the origin airport code.
  * @return The number of destination airports.
  */
 size_t StatisticsController::getNumberOfDestinationAirports(const string& code) const {
@@ -170,7 +170,7 @@ size_t StatisticsController::getNumberOfDestinationAirports(const string& code) 
 /**
  * @brief Gets the number of destination countries for a given airport.
  * Complexity: O(n), where n is the number of adjacent airports.
- * @param code (string) - the origin airport code.
+ * @param code - the origin airport code.
  * @return The number of destination countries.
  */
 size_t StatisticsController::getNumberOfDestinationCountries(const string& code) const {
@@ -190,7 +190,7 @@ size_t StatisticsController::getNumberOfDestinationCountries(const string& code)
 /**
  * @brief Gets the number of destination cities for a given airport.
  * Complexity: O(n), where n is the number of adjacent airports.
- * @param code (string) - the origin airport code.
+ * @param code - the origin airport code.
  * @return The number of destination cities.
  */
 size_t StatisticsController::getNumberOfDestinationCities(const string& code) const {
@@ -210,8 +210,8 @@ size_t StatisticsController::getNumberOfDestinationCities(const string& code) co
 /**
  * @brief Gets the number of reachable airports with a maximum number of stops.
  * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
- * @param code (string) - the origin airport code.
- * @param maxStops (int) - maximum number of stops.
+ * @param code - the origin airport code.
+ * @param maxStops - maximum number of stops.
  * @return The number of reachable airports with those stops.
  */
 int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const string& code, int maxStops) const {
@@ -245,8 +245,8 @@ int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const string&
 /**
  * @brief Gets the number of reachable countries with a maximum number of stops.
  * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
- * @param code (string) - the origin airport code.
- * @param maxStops (int) - maximum number of stops.
+ * @param code - the origin airport code.
+ * @param maxStops - maximum number of stops.
  * @return The number of reachable countries with those stops.
  */
 size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const string& code, int maxStops) const {
@@ -278,8 +278,8 @@ size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const str
 /**
  * @brief Gets the number of reachable cities with a maximum number of stops.
  * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
- * @param code (string) - the origin airport code.
- * @param maxStops (int) - maximum number of stops.
+ * @param code - the origin airport code.
+ * @param maxStops - maximum number of stops.
  * @return The number of reachable cities with those stops.
  */
 size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string& code, int maxStops) const {
@@ -311,7 +311,8 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
 /**
  * @brief Depth-first search to find all paths starting from a vertex.
  * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
- * @param code (string) - the origin airport code; maxStops - maximum number of stops.
+ * @param code - the origin airport code
+ * @param maxStops - maximum number of stops.
  * @return The number of reachable cities with those stops.
  */
 void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<std::pair<Airport, Airport>>& maxPaths) {
