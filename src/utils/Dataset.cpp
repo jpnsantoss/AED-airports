@@ -1,6 +1,3 @@
-//
-// Created by jpsantos on 17-12-2023.
-//
 
 #include <fstream>
 #include <sstream>
@@ -15,6 +12,10 @@ Dataset::Dataset() {
     loadFlights();
 }
 
+/**
+ * @brief Gets the singleton instance of the Dataset class.
+ * @return A pointer to the instance.
+ */
 Dataset* Dataset::getInstance() {
     if (dataset == nullptr) {
         dataset = new Dataset();
@@ -24,6 +25,9 @@ Dataset* Dataset::getInstance() {
     }
 }
 
+/**
+ * @brief Load airports data from 'airports.csv'.
+ */
 void Dataset::loadAirports() {
     ifstream file("data/airports.csv");
     if (!file.is_open()) {
@@ -56,6 +60,9 @@ void Dataset::loadAirports() {
     file.close();
 }
 
+/**
+ * @brief Load airlines data from 'airports.csv'.
+ */
 void Dataset::loadAirlines() {
     ifstream file("data/airlines.csv");
     if (!file.is_open()) {
@@ -78,6 +85,9 @@ void Dataset::loadAirlines() {
     file.close();
 }
 
+/**
+ * @brief Load flights data from 'airports.csv'.
+ */
 void Dataset::loadFlights() {
     ifstream file("data/flights.csv");
     if (!file.is_open()) {
@@ -106,25 +116,49 @@ void Dataset::loadFlights() {
 }
 
 // Getters
+
+/**
+ * @brief Gets a vector of all Flight objects.
+ * @return A constant reference to the vector of Flight objects.
+ */
 const vector<Flight> &Dataset::getFlights() const {
     return flights;
 }
 
+/**
+ * @brief Gets a vector of all Airport objects.
+ * @return A constant reference to the vector of Airport objects.
+ */
 const vector<Airport> &Dataset::getAirports() const {
     return airports;
 }
 
+/**
+ * @brief Gets a vector of all Airline objects.
+ * @return A constant reference to the vector of Airline objects.
+ */
 const vector<Airline> &Dataset::getAirlines() const {
     return airlines;
 }
 
+/**
+ * @brief Gets the graph of Airport objects.
+ * @return A constant reference to the graph of Airport objects.
+ */
 const Graph<Airport> &Dataset::getAirportGraph() const {
     return airportGraph;
 }
 
 //Aux functions
+
+/**
+ * @brief Finds an airport by its code.
+ * Complexity: O(n), where n is the number of flights from the airport.
+ * @param code - the airport code.
+ * @return The Airport object with the specified code.
+ */
 Airport Dataset::findAirportByCode(const string &code) {
-    for (const auto &airport : airports) {
+    for (const Airport& airport : airports) {
         if (airport.getAirportCode() == code) {
             return airport;
         }
@@ -133,7 +167,7 @@ Airport Dataset::findAirportByCode(const string &code) {
 }
 
 Airline Dataset::findAirlineByCode(const string &code) {
-    for (const auto &airline : airlines) {
+    for (const Airline& airline : airlines) {
         if (airline.getCode() == code) {
             return airline;
         }

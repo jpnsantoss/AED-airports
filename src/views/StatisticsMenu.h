@@ -1,6 +1,3 @@
-//
-// Created by Maureen Ah-shu🍩 on 27/12/2023.
-//
 
 #ifndef PROJECT_AED_AIRPORTS_STATISTICSMENU_H
 #define PROJECT_AED_AIRPORTS_STATISTICSMENU_H
@@ -13,7 +10,6 @@
 class StatisticsMenu : public Menu {
 public:
     void display() override {
-
         std::cout << "****************************************************************************************\n"
                   << "*   network statistics                                                                 *\n"
                   << "*                                                                                      *\n"
@@ -24,11 +20,11 @@ public:
                   << "*     5) Number of destinations (airports, cities or countries) available              *\n"
                   << "*        for a given airport                                                           *\n"
                   << "*     6) Number of reachable destinations (airports, cities or countries)              *\n"
-                  << "*        from a given airport  in a maximum number of X stops (lay-overs)              *\n"
+                  << "*        from a given airport in a maximum number of X stops (lay-overs)               *\n"
                   << "*     7) Maximum trip and corresponding pair of source-destination airports            *\n"
                   << "*     8) Identify the top-k airport with the greatest air traffic capacity             *\n"
-                  << "*     9) Identify the airports that are essential to the network’s circulation         *\n"
-                  << "*        capability                                                                    *\n"
+                  << "*     9) Identify the airports that are essential to the circulation capabilty         *\n"
+                  << "*        of the network                                                                *\n"
                   << "*                                                                                      *\n"
                   << "*                                                                              0) Back *\n"
                   << "****************************************************************************************\n"
@@ -37,27 +33,15 @@ public:
         do{
             std::cin >> option;
             switch(option) {
-                case 1: {
-                    break;
-                }
+                case 1: numberAirportsFlights(); break;
                 case 2: flightsOutAirport(); break;
                 case 3: flightsPerCityAirline(); break;
                 case 4: airportToCountries(); break;
-                case 5: {
-                    break;
-                }
-                case 6: {
-                    break;
-                }
-                case 7: {
-                    break;
-                }
-                case 8: {
-                    break;
-                }
-                case 9: {
-                    break;
-                }
+                case 5: numberDestinations(); break;
+                case 6: numberDestinationXstops(); break;
+                case 7: maxTrip(); break;
+                /*case 8: topKAirport(); break;
+                case 9: essentialAirports(); break;*/
                 case 0: backToMain(); break;
                 default: std::cout << "Invalid option, please try again: ";
             }
@@ -65,9 +49,15 @@ public:
                 option != 5 && option != 6 && option != 7 && option != 8 && option != 9);
     }
 private:
+    void numberAirportsFlights();
     void flightsOutAirport();
     void flightsPerCityAirline();
     void airportToCountries();
+    void numberDestinations();
+    void numberDestinationXstops();
+    void maxTrip();
+    void topKAirport();
+    void essentialAirports();
     static void backToMain();
     void printFooterOption();
 };

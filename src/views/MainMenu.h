@@ -1,6 +1,3 @@
-//
-// Created by jpsantos on 17-12-2023.
-//
 
 #ifndef PROJECT_AED_AIRPORTS_MAINMENU_H
 #define PROJECT_AED_AIRPORTS_MAINMENU_H
@@ -14,7 +11,7 @@
 class MainMenu : public Menu {
 public:
     void display() override {
-        system("clear");
+        system("cls");
         std::cout << "**********************************************\n"
                   << "*                                            *\n"
                   << "*         Welcome to AED Airports            *\n"

@@ -1,12 +1,16 @@
-//
-// Created by Maureen Ah-shu🍩 on 27/12/2023.
-//
 
 #include "StatisticsMenu.h"
 #include "MainMenu.h"
 #include "controllers/FlightController.h"
 #include "controllers/StatisticsController.h"
 #include <set>
+
+void StatisticsMenu::numberAirportsFlights() {
+    std::cout << "\n***********************************************************\n"
+              << "Global number of airports: " << StatisticsController::getTotalAirports() << "\n"
+              << "Global number of available flights: " << StatisticsController::getTotalFlights() << endl;
+    printFooterOption();
+}
 
 void StatisticsMenu::flightsOutAirport() {
     string code;
@@ -93,6 +97,85 @@ void StatisticsMenu::airportToCountries() {
         }
     } while(option != 1 && option != 2);
     printFooterOption();
+}
+
+void StatisticsMenu::numberDestinations() {
+    StatisticsController controller;
+    string code;
+    std::cout << "For which airport are you inquiring about the number of destinations available?\n"
+              << "Enter airport code:";
+    cin >> code;
+    int option;
+    std::cout << "Choose an option:\n"
+              << "1) Airports \n"
+              << "2) Countries \n"
+              << "3) Cities \n"
+              << "Option: ";
+    do {
+        std::cin >> option;
+        switch (option) {
+            case 1: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of airports available: " << controller.getNumberOfDestinationAirports(code) << endl;
+                break;
+            }
+            case 2: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of countries available: " << controller.getNumberOfDestinationCountries(code) << endl;
+                break;
+            }
+            case 3: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of cities available: " << controller.getNumberOfDestinationCities(code) << endl;
+                break;
+            }
+            default: std::cout << "Invalid option, please try again: ";
+        }
+    } while (option != 1 && option != 2 && option != 3);
+    printFooterOption();
+}
+
+void StatisticsMenu::numberDestinationXstops() {
+    StatisticsController controller;
+    string code;
+    std::cout << "For which airport are you inquiring about the number of destinations available?\n"
+              << "Enter airport code:";
+    cin >> code;
+    int stops;
+    std::cout << "How many stops? ";
+    cin >> stops;
+    int option;
+    std::cout << "Choose an option:\n"
+              << "1) Airports \n"
+              << "2) Countries \n"
+              << "3) Cities \n"
+              << "Option: ";
+    do {
+        std::cin >> option;
+        switch (option) {
+            case 1: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of airports available: " << controller.getNumberOfReachableAirportsWithMaxStops(code, stops) << endl;
+                break;
+            }
+            case 2: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of countries available: " << controller.getNumberOfReachableCountriesWithMaxStops(code, stops) << endl;
+                break;
+            }
+            case 3: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of cities available: " << controller.getNumberOfReachableCitiesWithMaxStops(code, stops) << endl;
+                break;
+            }
+            default: std::cout << "Invalid option, please try again: ";
+        }
+    } while (option != 1 && option != 2 && option != 3);
+    printFooterOption();
+}
+
+void StatisticsMenu::maxTrip() {
+
 }
 
 void StatisticsMenu::backToMain() {
