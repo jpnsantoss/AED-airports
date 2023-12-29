@@ -164,7 +164,11 @@ size_t StatisticsController::getNumberOfDestinationAirports(const string& code) 
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
     }
-    return origin->getAdj().size();
+    std::set<std::string> destinationAirports;
+    for (const Edge<Airport>& edge : origin->getAdj()) {
+        destinationAirports.insert(edge.getDest()->getInfo().getAirportCode());
+    }
+    return destinationAirports.size();
 }
 
 /**
@@ -209,7 +213,7 @@ size_t StatisticsController::getNumberOfDestinationCities(const string& code) co
 
 /**
  * @brief Gets the number of reachable airports with a maximum number of stops.
- * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code.
  * @param maxStops - maximum number of stops.
  * @return The number of reachable airports with those stops.
@@ -244,7 +248,7 @@ int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const string&
 
 /**
  * @brief Gets the number of reachable countries with a maximum number of stops.
- * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code.
  * @param maxStops - maximum number of stops.
  * @return The number of reachable countries with those stops.
@@ -277,7 +281,7 @@ size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const str
 
 /**
  * @brief Gets the number of reachable cities with a maximum number of stops.
- * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code.
  * @param maxStops - maximum number of stops.
  * @return The number of reachable cities with those stops.
@@ -310,7 +314,7 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
 
 /**
  * @brief Depth-first search to find all paths starting from a vertex.
- * Complexity: O(V+E), where V is the number of vertices (airports) and E the number of edges (flights).
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code
  * @param maxStops - maximum number of stops.
  * @return The number of reachable cities with those stops.
