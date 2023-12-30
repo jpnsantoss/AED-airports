@@ -3,21 +3,40 @@
 #include "StatisticsController.h"
 #include "FlightController.h"
 
+/**
+ * @brief Constructs a StatisticsControler object and initializes the airportGraph using the dataset.
+ */
 StatisticsController::StatisticsController() {
     Dataset* dataset = Dataset::getInstance();
     airportGraph = dataset->getAirportGraph();
 }
 
+/**
+ * @brief Gets the total number of airports in the dataset.
+ * Complexity: O(1).
+ * @return The total number of airports.
+ */
 size_t StatisticsController::getTotalAirports() {
     Dataset* dataset = Dataset::getInstance();
     return dataset->getAirports().size();
 }
 
+/**
+ * @brief Gets the total number of flights in the dataset.
+ * Complexity: O(1).
+ * @return The total number of flights.
+ */
 size_t StatisticsController::getTotalFlights() {
     Dataset* dataset = Dataset::getInstance();
     return dataset->getFlights().size();
 }
 
+/**
+ * @brief Gets the number of flights out of a specific airport and the associated airlines.
+ * Complexity: O(n), where n is the number of flights from the airport.
+ * @param identifier - the origin airport code.
+ * @return The number of flights.
+ */
 int StatisticsController::numberOfFlightsOutAirport(string &identifier) {
     int num = 0;
     Dataset* dataset = Dataset::getInstance();
@@ -34,6 +53,12 @@ int StatisticsController::numberOfFlightsOutAirport(string &identifier) {
     return num;
 }
 
+/**
+ * @brief Gets a set of airlines the operate flights out of a specific airport.
+ * Complexity: O(n), where n is the number of flights in the dataset.
+ * @param identifier - the origin airport code.
+ * @return A set of airlines operating flights out of the specified airport.
+ */
 set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
     set<Airline> airlines;
     Dataset* dataset = Dataset::getInstance();
@@ -51,6 +76,12 @@ set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
     return airlines;
 }
 
+/**
+ * @brief Gets the number of flights operated by a specific airline.
+ * Complexity: O(n), where n is the number of flights in the dataset.
+ * @param identifier - the airline code.
+ * @return The number of flights operated by the specified airline.
+ */
 int StatisticsController::numberOfFlightsPerAirline(string &identifier) {
     int num = 0;
     Dataset* dataset = Dataset::getInstance();
@@ -65,6 +96,12 @@ int StatisticsController::numberOfFlightsPerAirline(string &identifier) {
     return num;
 }
 
+/**
+ * @brief Gets the number of flights involving a specific city (as origin or destination).
+ * Complexity: O(n), where n is the number of flights in the dataset.
+ * @param identifier - the name of the city.
+ * @return The number of flights involving the specified city.
+ */
 int StatisticsController::numberOfFlightsPerCity(string &identifier) {
     int num = 0;
     Dataset* dataset = Dataset::getInstance();
@@ -77,6 +114,12 @@ int StatisticsController::numberOfFlightsPerCity(string &identifier) {
     return num;
 }
 
+/**
+ * @brief Gets a set of the countries that a specific airport flies to.
+ * Complexity: O(n), where n is the code of adjacent airports.
+ * @param identifier - the origin airport code.
+ * @return A set of countries that the specified airport flies to.
+ */
 set<string> StatisticsController::numberOfCountriesForThisAirport(string &identifier) {
     Dataset* dataset = Dataset::getInstance();
     set<string> countries;
@@ -92,6 +135,12 @@ set<string> StatisticsController::numberOfCountriesForThisAirport(string &identi
     return countries;
 }
 
+/**
+ * @brief Gets the number of destination airports for a given airport.
+ * Complexity: O(n), where n is the number of adjacent airports.
+ * @param code - the origin airport code.
+ * @return The number of destination airports.
+ */
 set<string> StatisticsController::numberOfCountriesForThisCity(string &identifier) {
     Dataset* dataset = Dataset::getInstance();
     set<string> countries;
@@ -104,15 +153,33 @@ set<string> StatisticsController::numberOfCountriesForThisCity(string &identifie
     return countries;
 }
 
-size_t StatisticsController::getNumberOfDestinationAirports(const Airport& airport) const {
+/**
+ * @brief Gets the number of destination airports for a given airport.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param code - the origin airport code.
+ * @return The number of destination airports.
+ */
+size_t StatisticsController::getNumberOfDestinationAirports(const string& code) const {
+    Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
     }
-    return origin->getAdj().size();
+    std::set<std::string> destinationAirports;
+    for (const Edge<Airport>& edge : origin->getAdj()) {
+        destinationAirports.insert(edge.getDest()->getInfo().getAirportCode());
+    }
+    return destinationAirports.size();
 }
 
-size_t StatisticsController::getNumberOfDestinationCountries(const Airport& airport) const {
+/**
+ * @brief Gets the number of destination countries for a given airport.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param code - the origin airport code.
+ * @return The number of destination countries.
+ */
+size_t StatisticsController::getNumberOfDestinationCountries(const string& code) const {
+    Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
@@ -125,7 +192,14 @@ size_t StatisticsController::getNumberOfDestinationCountries(const Airport& airp
     return destinationCountries.size();
 }
 
-size_t StatisticsController::getNumberOfDestinationCities(const Airport& airport) const {
+/**
+ * @brief Gets the number of destination cities for a given airport.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param code - the origin airport code.
+ * @return The number of destination cities.
+ */
+size_t StatisticsController::getNumberOfDestinationCities(const string& code) const {
+    Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
@@ -138,7 +212,15 @@ size_t StatisticsController::getNumberOfDestinationCities(const Airport& airport
     return destinationCities.size();
 }
 
-int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const Airport& airport, int maxStops) const {
+/**
+ * @brief Gets the number of reachable airports with a maximum number of stops.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param code - the origin airport code.
+ * @param maxStops - maximum number of stops.
+ * @return The number of reachable airports with those stops.
+ */
+int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const string& code, int maxStops) const {
+    Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
@@ -165,7 +247,15 @@ int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const Airport
     return reachableAirports-1;
 }
 
-size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const Airport& airport, int maxStops) const {
+/**
+ * @brief Gets the number of reachable countries with a maximum number of stops.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param code - the origin airport code.
+ * @param maxStops - maximum number of stops.
+ * @return The number of reachable countries with those stops.
+ */
+size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const string& code, int maxStops) const {
+    Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
@@ -190,7 +280,15 @@ size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const Air
     return reachableCountries.size();
 }
 
-size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const Airport& airport, int maxStops) const {
+/**
+ * @brief Gets the number of reachable cities with a maximum number of stops.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param code - the origin airport code.
+ * @param maxStops - maximum number of stops.
+ * @return The number of reachable cities with those stops.
+ */
+size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string& code, int maxStops) const {
+    Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
         throw std::runtime_error("Airport not found");
@@ -215,6 +313,12 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const Airpor
     return reachableCities.size();
 }
 
+/**
+ * @brief Depth-first search to find all paths starting from a vertex.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param
+ * @param
+ */
 void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<std::pair<Airport, Airport>>& maxPaths) {
     v->setProcessing(true);
     path.push_back(v->getInfo());
@@ -237,6 +341,11 @@ void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, 
     path.pop_back();
 }
 
+/**
+ * @brief Gets a vector containing pairs of airports representing maximum-stop trips.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @return Vector containing pairs of airports representing maximum-stops trips.
+ */
 std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips() {
     std::vector<Airport> path;
     std::vector<std::pair<Airport, Airport>> maxPaths;
