@@ -62,7 +62,6 @@ private:
     void essentialAirports();
     static void backToMain();
     void printFooterOption();
-    void essentialAirports();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSMENU_H
