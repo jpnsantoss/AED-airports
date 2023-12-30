@@ -152,7 +152,7 @@ const Graph<Airport> &Dataset::getAirportGraph() const {
 
 /**
  * @brief Finds an airport by its code.
- * Complexity: O(n), where n is the number of flights from the airport.
+ * Complexity: O(n), where n is the number of airports.
  * @param code - the airport code.
  * @return The airport object with the specified code.
  */
@@ -167,9 +167,9 @@ Airport Dataset::findAirportByCode(const string &code) {
 
 /**
  * @brief Finds an airline by its code.
- * Complexity: O(n), where n is the number of flights from the airport.
- * @param code - the airport code.
- * @return The airport object with the specified code.
+ * Complexity: O(n), where n is the number of airlines.
+ * @param code - the airline code.
+ * @return The airline object with the specified code.
  */
 Airline Dataset::findAirlineByCode(const string &code) {
     for (const Airline& airline : airlines) {
@@ -180,6 +180,13 @@ Airline Dataset::findAirlineByCode(const string &code) {
     throw runtime_error("Airline not found");
 }
 
+/**
+ * @brief Finds an airline by its code.
+ * Complexity: O(n), where n is the number of flights in the dataset.
+ * @param source - the source airport of the flight.
+ * @param destination - the destination airport of the flight.
+ * @return A pointer to the found flight object; nullptr if not found.
+ */
 Flight* Dataset::findFlight(const Airport& source, const Airport& destination) {
     for (Flight& flight : flights) {
         if (flight.getSource() == source && flight.getTarget() == destination) {

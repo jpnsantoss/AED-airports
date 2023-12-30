@@ -1,12 +1,9 @@
-//
-// Created by jpsantos on 30-12-2023.
-//
 
 #include "MainMenu.h"
 #include "BestOption.h"
 
 void MainMenu::display() {
-    system("clear");
+    system("cls");
     cout << "**********************************************\n"
               << "*                                            *\n"
               << "*         Welcome to AED Airports            *\n"
