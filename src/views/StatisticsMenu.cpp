@@ -5,6 +5,9 @@
 #include "controllers/StatisticsController.h"
 #include <set>
 
+/**
+ * @brief Displays the number all airports and airlines of the dataset.
+ */
 void StatisticsMenu::numberAirportsFlights() {
     std::cout << "\n***********************************************************\n"
               << "Global number of airports: " << StatisticsController::getTotalAirports() << "\n"
@@ -12,6 +15,9 @@ void StatisticsMenu::numberAirportsFlights() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of flights out of a given airport and the airlines that flight out of it.
+ */
 void StatisticsMenu::flightsOutAirport() {
     string code;
     std::cout << "Enter airport code: ";
@@ -27,6 +33,9 @@ void StatisticsMenu::flightsOutAirport() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of flights per city or airline, depending on user input.
+ */
 void StatisticsMenu::flightsPerCityAirline() {
     int option;
     std::cout << "Choose an option:\n";
@@ -58,6 +67,9 @@ void StatisticsMenu::flightsPerCityAirline() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of flights per city or airline, depending on user input.
+ */
 void StatisticsMenu::airportToCountries() {
     int option;
     std::cout << "Choose an option:\n";
@@ -99,6 +111,9 @@ void StatisticsMenu::airportToCountries() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of destinations available for a given airport.
+ */
 void StatisticsMenu::numberDestinations() {
     StatisticsController controller;
     string code;
@@ -135,6 +150,9 @@ void StatisticsMenu::numberDestinations() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of reachable destinations from a given airport in a maximum number of X stops (lay-overs).
+ */
 void StatisticsMenu::numberDestinationXstops() {
     StatisticsController controller;
     string code;
@@ -174,15 +192,24 @@ void StatisticsMenu::numberDestinationXstops() {
     printFooterOption();
 }
 
+/**
+ * @brief
+ */
 void StatisticsMenu::maxTrip() {
 
 }
 
+/**
+ * @brief Navigates back to the main menu.
+ */
 void StatisticsMenu::backToMain() {
     MainMenu mainMenu;
     mainMenu.display();
 }
 
+/**
+ * @brief Displays the footer option and handles user input.
+ */
 void StatisticsMenu::printFooterOption(){
     int option;
     std::cout << "\n                                                   0) Back   "

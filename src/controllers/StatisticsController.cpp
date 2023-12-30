@@ -154,7 +154,7 @@ set<string> StatisticsController::numberOfCountriesForThisCity(string &identifie
 
 /**
  * @brief Gets the number of destination airports for a given airport.
- * Complexity: O(n), where n is the number of adjacent airports.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code.
  * @return The number of destination airports.
  */
@@ -173,7 +173,7 @@ size_t StatisticsController::getNumberOfDestinationAirports(const string& code) 
 
 /**
  * @brief Gets the number of destination countries for a given airport.
- * Complexity: O(n), where n is the number of adjacent airports.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code.
  * @return The number of destination countries.
  */
@@ -193,7 +193,7 @@ size_t StatisticsController::getNumberOfDestinationCountries(const string& code)
 
 /**
  * @brief Gets the number of destination cities for a given airport.
- * Complexity: O(n), where n is the number of adjacent airports.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @param code - the origin airport code.
  * @return The number of destination cities.
  */
@@ -315,9 +315,8 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
 /**
  * @brief Depth-first search to find all paths starting from a vertex.
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
- * @param code - the origin airport code
- * @param maxStops - maximum number of stops.
- * @return The number of reachable cities with those stops.
+ * @param
+ * @param
  */
 void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<std::pair<Airport, Airport>>& maxPaths) {
     v->setProcessing(true);
@@ -341,6 +340,11 @@ void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, 
     path.pop_back();
 }
 
+/**
+ * @brief Gets a vector containing pairs of airports representing maximum-stop trips.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @return Vector containing pairs of airports representing maximum-stops trips.
+ */
 std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips() {
     std::vector<Airport> path;
     std::vector<std::pair<Airport, Airport>> maxPaths;
