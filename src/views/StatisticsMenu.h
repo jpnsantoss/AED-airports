@@ -7,13 +7,14 @@
 
 #include <iostream>
 #include <set>
+#include <unordered_set>
+#include <limits>
 #include "Menu.h"
 #include "models/Airline.h"
 
 class StatisticsMenu : public Menu {
 public:
     void display() override {
-
         std::cout << "****************************************************************************************\n"
                   << "*   network statistics                                                                 *\n"
                   << "*                                                                                      *\n"
@@ -34,35 +35,36 @@ public:
                   << "****************************************************************************************\n"
                   << "Option: ";
         int option;
-        do{
-            std::cin >> option;
-            switch(option) {
-                case 1: {
-                    break;
-                }
-                case 2: flightsOutAirport(); break;
-                case 3: flightsPerCityAirline(); break;
-                case 4: airportToCountries(); break;
-                case 5: {
-                    break;
-                }
-                case 6: {
-                    break;
-                }
-                case 7: {
-                    break;
-                }
-                case 8: {
-                    break;
-                }
-                case 9: {
-                    break;
-                }
-                case 0: backToMain(); break;
-                default: std::cout << "Invalid option, please try again: ";
+        while(!(std::cin >> option) || (option < 0 || option > 9)) {
+            std::cin.clear(); // clear the error state
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore the invalid input
+            std::cout << "Invalid option, please try again: ";
+        }
+        switch(option) {
+            case 1: {
+                break;
             }
-        } while(option != 0 && option != 1 && option != 2 && option != 3 && option != 4 &&
-                option != 5 && option != 6 && option != 7 && option != 8 && option != 9);
+            case 2: flightsOutAirport(); break;
+            case 3: flightsPerCityAirline(); break;
+            case 4: airportToCountries(); break;
+            case 5: {
+                break;
+            }
+            case 6: {
+                break;
+            }
+            case 7: {
+                break;
+            }
+            case 8: {
+                break;
+            }
+            case 9: {
+                essentialAirports();
+                break;
+            }
+            case 0: backToMain(); break;
+        }
     }
 private:
     void flightsOutAirport();
@@ -70,6 +72,7 @@ private:
     void airportToCountries();
     static void backToMain();
     void printFooterOption();
+    void essentialAirports();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSMENU_H

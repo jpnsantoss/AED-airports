@@ -5,6 +5,15 @@
 #include "Airport.h"
 
 // Constructor
+Airport::Airport() {
+    this->airportCode = "";
+    this->airportName = "";
+    this->city = "";
+    this->country = "";
+    this->location = Location();
+}
+
+// Constructor
 Airport::Airport(const string &airportCode, const string &airportName, const string &city, const string &country, const Location &location)
         : airportCode(airportCode), airportName(airportName), city(city), country(country), location(location) {}
 
