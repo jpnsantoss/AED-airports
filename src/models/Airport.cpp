@@ -2,6 +2,9 @@
 #include "Airport.h"
 
 // Constructor
+/**
+ * @brief Default constructor for Airport class.
+ */
 Airport::Airport() {
     this->airportCode = "";
     this->airportName = "";
@@ -22,6 +25,7 @@ Airport::Airport(const string &airportCode, const string &airportName, const str
         : airportCode(airportCode), airportName(airportName), city(city), country(country), location(location) {}
 
 // Getters
+
 /**
  * @brief Gets the airport code.
  * @return The airport code.
@@ -63,6 +67,7 @@ Location Airport::getLocation() const {
 }
 
 // Setters
+
 /**
  * @brief Sets the airport code.
  * @param code - the new airport code.
@@ -102,6 +107,8 @@ void Airport::setCountry(const string &country) {
 void Airport::setLocation(const Location &location) {
     this->location = location;
 }
+
+// Operators
 
 /**
  * @brief Overloaded output stream operator for Airport class.

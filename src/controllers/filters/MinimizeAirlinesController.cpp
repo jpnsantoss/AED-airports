@@ -1,9 +1,7 @@
 #include "MinimizeAirlinesController.h"
-#include <stdexcept>
-#include <set>
 
 /**
- * @brief Gets teh shortest paths between two airports using BFS.
+ * @brief Gets the shortest paths between two airports using BFS.
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges in the airport graph.
  * @param origin - the origin airport code;
  * @param destination - the destination airport code.

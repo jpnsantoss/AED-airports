@@ -178,9 +178,9 @@ size_t StatisticsController::getNumberOfDestinationAirports(const string& code) 
     Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
-        throw std::runtime_error("Airport not found");
+        throw runtime_error("Airport not found");
     }
-    std::set<std::string> destinationAirports;
+    set<string> destinationAirports;
     for (const Edge<Airport>& edge : origin->getAdj()) {
         destinationAirports.insert(edge.getDest()->getInfo().getAirportCode());
     }
@@ -197,9 +197,9 @@ size_t StatisticsController::getNumberOfDestinationCountries(const string& code)
     Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
-        throw std::runtime_error("Airport not found");
+        throw runtime_error("Airport not found");
     }
-    std::set<std::string> destinationCountries;
+    set<string> destinationCountries;
     for (const Edge<Airport>& edge : origin->getAdj()) {
         const Airport& destinationAirport = edge.getDest()->getInfo();
         destinationCountries.insert(destinationAirport.getCountry());
@@ -217,9 +217,9 @@ size_t StatisticsController::getNumberOfDestinationCities(const string& code) co
     Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
-        throw std::runtime_error("Airport not found");
+        throw runtime_error("Airport not found");
     }
-    std::set<std::string> destinationCities;
+    set<string> destinationCities;
     for (const Edge<Airport>& edge : origin->getAdj()) {
         const Airport& destinationAirport = edge.getDest()->getInfo();
         destinationCities.insert(destinationAirport.getCity());
@@ -238,15 +238,15 @@ int StatisticsController::getNumberOfReachableAirportsWithMaxStops(const string&
     Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
-        throw std::runtime_error("Airport not found");
+        throw runtime_error("Airport not found");
     }
-    std::queue<std::pair<Vertex<Airport>*, int>> queue;
-    std::set<Vertex<Airport>*> visited;
+    queue<pair<Vertex<Airport>*, int>> queue;
+    set<Vertex<Airport>*> visited;
     queue.emplace(origin, 0);
     visited.insert(origin);
     int reachableAirports = 0;
     while (!queue.empty()) {
-        std::pair<Vertex<Airport>*, int> current = queue.front();
+        pair<Vertex<Airport>*, int> current = queue.front();
         queue.pop();
         if (current.second <= maxStops) {
             reachableAirports++;
@@ -273,15 +273,15 @@ size_t StatisticsController::getNumberOfReachableCountriesWithMaxStops(const str
     Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
-        throw std::runtime_error("Airport not found");
+        throw runtime_error("Airport not found");
     }
-    std::queue<std::pair<Vertex<Airport>*, int>> queue;
-    std::set<Vertex<Airport>*> visited;
+    queue<pair<Vertex<Airport>*, int>> queue;
+    set<Vertex<Airport>*> visited;
     queue.emplace(origin, 0);
     visited.insert(origin);
-    std::set<std::string> reachableCountries;
+    set<string> reachableCountries;
     while (!queue.empty()) {
-        std::pair<Vertex<Airport>*, int> current = queue.front();
+        pair<Vertex<Airport>*, int> current = queue.front();
         queue.pop();
         if (current.second <= maxStops) {
             for (const Edge<Airport>& edge: current.first->getAdj()) {
@@ -306,15 +306,15 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
     Airport airport = FlightController::findAirport(code);
     Vertex<Airport>* origin = airportGraph.findVertex(airport);
     if (origin == nullptr) {
-        throw std::runtime_error("Airport not found");
+        throw runtime_error("Airport not found");
     }
-    std::queue<std::pair<Vertex<Airport>*, int>> queue;
-    std::set<Vertex<Airport>*> visited;
+    queue<pair<Vertex<Airport>*, int>> queue;
+    set<Vertex<Airport>*> visited;
     queue.emplace(origin, 0);
     visited.insert(origin);
-    std::set<std::string> reachableCities;
+    set<string> reachableCities;
     while (!queue.empty()) {
-        std::pair<Vertex<Airport>*, int> current = queue.front();
+        pair<Vertex<Airport>*, int> current = queue.front();
         queue.pop();
         if (current.second <= maxStops) {
             for (const Edge<Airport>& edge: current.first->getAdj()) {
@@ -332,16 +332,16 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
  * @brief Depth-first search to find all paths starting from a vertex.
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  */
-void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<std::pair<Airport, Airport>>& maxPaths) {
+void dfsAllPaths(Vertex<Airport>* v, vector<Airport>& path, int& maxStops, vector<pair<Airport, Airport>>& maxPaths) {
     v->setProcessing(true);
     path.push_back(v->getInfo());
 
     if (path.size() > maxStops) {
         maxStops = path.size();
         maxPaths.clear();
-        maxPaths.push_back(std::make_pair(path.front(), path.back()));
+        maxPaths.push_back(make_pair(path.front(), path.back()));
     } else if (path.size() == maxStops) {
-        maxPaths.push_back(std::make_pair(path.front(), path.back()));
+        maxPaths.push_back(make_pair(path.front(), path.back()));
     }
 
     for (const Edge<Airport>& e : v->getAdj()) {
@@ -359,9 +359,9 @@ void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, 
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
  * @return Vector containing pairs of airports representing maximum-stops trips.
  */
-std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips() {
-    std::vector<Airport> path;
-    std::vector<std::pair<Airport, Airport>> maxPaths;
+vector<pair<Airport, Airport>> StatisticsController::getMaximumTrips() {
+    vector<Airport> path;
+    vector<pair<Airport, Airport>> maxPaths;
     int maxStops = 0;
 
     for (Vertex<Airport>* v : airportGraph.getVertexSet()) {
@@ -371,7 +371,7 @@ std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips()
     }
 
     if (maxPaths.empty()) {
-        throw std::runtime_error("No path found");
+        throw runtime_error("No path found");
     }
 
     return maxPaths;
@@ -415,7 +415,7 @@ void StatisticsController::calculateIndegrees(const vector<Vertex<Airport>*>& ai
  * @param k - number of airports to retrieve.
  * @return A vector of pairs representing the airports and their total degree, sorted in descending order by degree.
  */
-std::vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k) {
+vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k) {
     vector<Vertex<Airport>*> airports;
     vector<pair<Airport, unsigned long>> topAirports;
 
@@ -425,7 +425,7 @@ std::vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(i
 
     calculateIndegrees(airports);
 
-    std::sort(airports.begin(), airports.end(), compareAirportsByTotalDegree);
+    sort(airports.begin(), airports.end(), compareAirportsByTotalDegree);
 
     // Insert the top-k airports into the set
     for (int i = 0; i < k && i < airports.size(); i++) {

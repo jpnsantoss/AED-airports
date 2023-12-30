@@ -3,8 +3,9 @@
 #define PROJECT_AED_AIRPORTS_AIRPORT_H
 
 #include <string>
-using namespace std;
 #include "Location.h"
+
+using namespace std;
 
 class Airport {
 private:
@@ -33,14 +34,16 @@ public:
     void setCountry(const string &country);
     void setLocation(const Location &location);
 
+    // Operators
     bool operator == (const Airport &other) const;
     friend ostream & operator << (ostream &os, Airport &airport);
 };
 
+// Hash function for Airport class
 template <>
 struct std::hash<Airport> {
     size_t operator()(const Airport& airport) const {
-        size_t airportCode = std::hash<std::string>{}(airport.getAirportCode());
+        size_t airportCode = hash<string>{}(airport.getAirportCode());
         return airportCode; // Combine the hashes appropriately
     }
 };

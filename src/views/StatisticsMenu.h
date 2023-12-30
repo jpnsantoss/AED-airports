@@ -9,10 +9,19 @@
 #include "Menu.h"
 #include "models/Airline.h"
 
+using namespace std;
+
 class StatisticsMenu : public Menu {
 public:
+    /**
+     * Displays the main menu for the statistics options.
+     * Complexity: O(1), as the number of menu options is fixed.
+     * @brief Displays the main menu and handles user input for the statistics options.
+     * @see numberAirportsFlights(), flightsOutAirport(), flightsPerCityAirline(), airportToCountries(), numberDestinations(), numberDestinationXstops(), maxTrip(), topKAirports(), essentialAirports(), backToMain()
+     * @return void
+     */
     void display() override {
-        std::cout << "****************************************************************************************\n"
+        cout << "****************************************************************************************\n"
                   << "*   network statistics                                                                 *\n"
                   << "*                                                                                      *\n"
                   << "*     1) Global number of airports and number of available flights                     *\n"
@@ -32,10 +41,10 @@ public:
                   << "****************************************************************************************\n"
                   << "Option: ";
         int option;
-        while(!(std::cin >> option) || (option < 0 || option > 9)) {
-            std::cin.clear(); // clear the error state
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore the invalid input
-            std::cout << "Invalid option, please try again: ";
+        while(!(cin >> option) || (option < 0 || option > 9)) {
+            cin.clear(); // clear the error state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore the invalid input
+            cout << "Invalid option, please try again: ";
         }
         switch(option) {
             case 1: numberAirportsFlights(); break;

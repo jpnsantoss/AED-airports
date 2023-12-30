@@ -1,6 +1,5 @@
 
-#include <sstream>
-#include <algorithm>
+
 #include "BestOptionController.h"
 #include "FlightController.h"
 
@@ -20,11 +19,11 @@ BestOptionController::BestOptionController() {
  * @param delimiter - the character used to separate substrings.
  * @return A vector of the substrings.
  */
-std::vector<std::string> splitString(const std::string &str, char delimiter) {
-    std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(str);
-    while (std::getline(tokenStream, token, delimiter)) {
+vector<string> splitString(const string &str, char delimiter) {
+    vector<string> tokens;
+    string token;
+    istringstream tokenStream(str);
+    while (getline(tokenStream, token, delimiter)) {
         tokens.push_back(token);
     }
     return tokens;
@@ -87,11 +86,11 @@ vector<vector<Airport>> BestOptionController::getShortestPathsBFS(const Airport 
  * @param path - vector representing the current path.
  * @param paths - vector to store resulting paths
  */
-void BestOptionController::buildPaths(Vertex<Airport>* origin, Vertex<Airport>* destination, std::map<Vertex<Airport>*, std::vector<Vertex<Airport>*>>& prev, std::vector<Airport>& path, std::vector<std::vector<Airport>>& paths) {
+void BestOptionController::buildPaths(Vertex<Airport>* origin, Vertex<Airport>* destination, map<Vertex<Airport>*, vector<Vertex<Airport>*>>& prev, vector<Airport>& path, vector<vector<Airport>>& paths) {
     path.push_back(destination->getInfo());
     if (destination == origin) {
-        std::vector<Airport> newPath = path;
-        std::reverse(newPath.begin(), newPath.end());
+        vector<Airport> newPath = path;
+        reverse(newPath.begin(), newPath.end());
         paths.push_back(newPath);
     } else {
         for (Vertex<Airport>* vertex : prev[destination]) {

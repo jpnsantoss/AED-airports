@@ -2,9 +2,10 @@
 #ifndef PROJECT_AED_AIRPORTS_MINIMIZEAIRLINESCONTROLLER_H
 #define PROJECT_AED_AIRPORTS_MINIMIZEAIRLINESCONTROLLER_H
 
-#include "../FlightController.h"
 #include "controllers/BestOptionController.h"
 #include <vector>
+#include <stdexcept>
+#include <set>
 
 class MinimizeAirlinesController : public BestOptionController {
 public:

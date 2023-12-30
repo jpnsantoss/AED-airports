@@ -84,6 +84,7 @@ class Graph {
     bool dfsIsDAG(Vertex<T> *v) const;
 public:
     Vertex<T> *findVertex(const T &in) const;
+    Edge<T>* findEdge(const T& source, const T& destination);
     int getNumVertex() const;
     bool addVertex(const T &in);
     bool removeVertex(const T &in);
@@ -174,6 +175,24 @@ Vertex<T> * Graph<T>::findVertex(const T &in) const {
         if (v->info == in)
             return v;
     return NULL;
+}
+
+template<class T>
+Edge<T>* Graph<T>::findEdge(const T& source, const T& destination) {
+    Vertex<T>* sourceVertex = findVertex(source);
+    Vertex<T>* destinationVertex = findVertex(destination);
+
+    if (sourceVertex == nullptr || destinationVertex == nullptr) {
+        return nullptr;
+    }
+
+    for (Edge<T>& edge : sourceVertex->adj) {
+        if (edge.getDest() == destinationVertex) {
+            return &edge;
+        }
+    }
+
+    return nullptr;
 }
 
 template <class T>

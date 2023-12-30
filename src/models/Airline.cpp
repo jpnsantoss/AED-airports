@@ -13,11 +13,12 @@ Airline::Airline(const std::string &code, const std::string &name, const std::st
         : code(code), name(name), callsign(callsign), country(country) {}
 
 // Getters
+
 /**
  * @brief Gets the airline code.
  * @return The airline code.
  */
-std::string Airline::getCode() const {
+string Airline::getCode() const {
     return code;
 }
 
@@ -25,7 +26,7 @@ std::string Airline::getCode() const {
  * @brief Gets the airline name.
  * @return The airline name.
  */
-std::string Airline::getName() const {
+string Airline::getName() const {
     return name;
 }
 
@@ -33,7 +34,7 @@ std::string Airline::getName() const {
  * @brief Gets the airline callsign.
  * @return The airline callsign.
  */
-std::string Airline::getCallsign() const {
+string Airline::getCallsign() const {
     return callsign;
 }
 
@@ -41,16 +42,17 @@ std::string Airline::getCallsign() const {
  * @brief Gets the airline country,
  * @return The country of the airline.
  */
-std::string Airline::getCountry() const {
+string Airline::getCountry() const {
     return country;
 }
 
 // Setters
+
 /**
  * @brief Set the airline code.
  * @param code - the new airline code.
  */
-void Airline::setCode(const std::string &code) {
+void Airline::setCode(const string &code) {
     this->code = code;
 }
 
@@ -58,7 +60,7 @@ void Airline::setCode(const std::string &code) {
  * @brief Set the airline name.
  * @param name - the new airline name.
  */
-void Airline::setName(const std::string &name) {
+void Airline::setName(const string &name) {
     this->name = name;
 }
 
@@ -66,7 +68,7 @@ void Airline::setName(const std::string &name) {
  * @brief Set the airline callsign.
  * @param callsign - the new airline callsign.
  */
-void Airline::setCallsign(const std::string &callsign) {
+void Airline::setCallsign(const string &callsign) {
     this->callsign = callsign;
 }
 
@@ -74,6 +76,6 @@ void Airline::setCallsign(const std::string &callsign) {
  * @brief Set the country of the airline.
  * @param country - the new country of the airline.
  */
-void Airline::setCountry(const std::string &country) {
+void Airline::setCountry(const string &country) {
     this->country = country;
 }

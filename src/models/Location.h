@@ -2,14 +2,18 @@
 #ifndef PROJECT_AED_AIRPORTS_LOCATION_H
 #define PROJECT_AED_AIRPORTS_LOCATION_H
 
+#include <cmath>
+
+using namespace std;
+
 class Location {
 private:
     double latitude;
     double longitude;
 
 public:
-    Location();
     // Constructor
+    Location();
     Location(double latitude, double longitude);
 
     // Getters
