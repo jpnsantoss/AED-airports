@@ -26,23 +26,24 @@ public:
                   << "**********************************************\n"
                   << "Option: ";
         int option;
-        do{
-            std::cin >> option;
-            switch(option) {
-                case 1: {
-                    StatisticsMenu statisticsMenu;
-                    statisticsMenu.display();
-                    break;
-                }
-                case 2: {
-                    BestOption flightTest;
-                    flightTest.display();
-                    break;
-                }
-                case 0: exit(0);
-                default: std::cout << "Invalid option, please try again: ";
+        while(!(std::cin >> option) || (option != 0 && option != 1 && option != 2)) {
+            std::cin.clear(); // clear the error state
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore the invalid input
+            std::cout << "Invalid option, please try again: ";
+        }
+        switch(option) {
+            case 1: {
+                StatisticsMenu statisticsMenu;
+                statisticsMenu.display();
+                break;
             }
-        } while(option != 0 && option != 1 && option != 2 && option != 3);
+            case 2: {
+                BestOption flightTest;
+                flightTest.display();
+                break;
+            }
+            case 0: exit(0);
+        }
     }
 };
 

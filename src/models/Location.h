@@ -11,6 +11,7 @@ private:
     double longitude;
 
 public:
+    Location();
     // Constructor
     Location(double latitude, double longitude);
 

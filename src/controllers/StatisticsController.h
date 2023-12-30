@@ -43,6 +43,11 @@ public:
     static set<string> numberOfCountriesForThisCity(string &identifier);
 
     vector<pair<Airport, Airport>> getMaximumTrips();
+
+    unordered_set<Airport> findEssentialAirports();
+
+    void dfsForEssentialAirports(Vertex<Airport> *vertex, unordered_set<Airport> &essentialAirports,
+                                 stack<Vertex<Airport> *> &vertexStack, int &index);
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H

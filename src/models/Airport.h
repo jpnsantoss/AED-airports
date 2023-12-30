@@ -19,6 +19,7 @@ private:
 
 public:
     // Constructor
+    Airport();
     Airport(const string &airportCode, const string &airportName, const string &city, const string &country, const Location &location);
 
     // Getters
@@ -37,6 +38,14 @@ public:
 
     bool operator == (const Airport &other) const;
     friend ostream & operator << (ostream &os, Airport &airport);
+};
+
+template <>
+struct std::hash<Airport> {
+    size_t operator()(const Airport& airport) const {
+        size_t airportCode = std::hash<std::string>{}(airport.getAirportCode());
+        return airportCode; // Combine the hashes appropriately
+    }
 };
 
 #endif //PROJECT_AED_AIRPORTS_AIRPORT_H

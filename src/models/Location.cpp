@@ -6,6 +6,12 @@
 #include <cmath>
 
 // Constructor
+Location::Location() {
+    this->latitude = 0.0;
+    this->longitude = 0.0;
+}
+
+// Constructor
 Location::Location(double latitude, double longitude) : latitude(latitude), longitude(longitude) {}
 
 // Getters
