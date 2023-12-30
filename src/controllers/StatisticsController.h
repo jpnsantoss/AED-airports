@@ -10,7 +10,7 @@ using namespace std;
 class StatisticsController {
 private:
     Graph<Airport> airportGraph;
-
+    void calculateIndegrees(const vector<Vertex<Airport>*>& airports);
 public:
     StatisticsController();
 
@@ -30,17 +30,17 @@ public:
 
     size_t getNumberOfReachableCitiesWithMaxStops(const string& code, int maxStops) const;
 
-    static set<string> numberOfCountriesForThisAirport(string &identifier);
+    set<string> countriesForThisAirport(string &identifier);
 
-    static int numberOfFlightsPerAirline(string &identifier);
+    int numberOfFlightsPerAirline(string &identifier);
 
-    static int numberOfFlightsPerCity(string &identifier);
+    int numberOfFlightsPerCity(string &identifier);
 
-    static set<Airline> setOfFlightsOutAirport(string &identifier);
+    set<Airline> setOfFlightsOutAirport(string &identifier);
 
-    static int numberOfFlightsOutAirport(string &identifier);
+    size_t numberOfFlightsOutAirport(string &identifier);
 
-    static set<string> numberOfCountriesForThisCity(string &identifier);
+    set<string> countriesForThisCity(string &identifier);
 
     vector<pair<Airport, Airport>> getMaximumTrips();
 

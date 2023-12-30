@@ -20,15 +20,15 @@ void StatisticsMenu::numberAirportsFlights() {
  */
 void StatisticsMenu::flightsOutAirport() {
     string code;
+    StatisticsController controller;
     std::cout << "Enter airport code: ";
     cin >> code;
-    set<Airline> airlines = StatisticsController::setOfFlightsOutAirport(code);
+    set<Airline> airlines = controller.setOfFlightsOutAirport(code);
     std::cout << "\n***********************************************************\n";
-    std::cout << "Number of flights out of this airport: " << StatisticsController::numberOfFlightsOutAirport(code) << endl;
-    std::cout << "Number of airlines that flight out of this airport: " << airlines.size() << endl;
-    std::cout << endl;
+    std::cout << "Number of flights out of this airport: " << controller.numberOfFlightsOutAirport(code) << "\n";
+    std::cout << "Number of airlines that flight out of this airport: " << airlines.size() << "\n\n";
     for(const Airline& air: airlines){
-        std::cout << " - " << air.getCode() << ";\t" << air.getName() << " - " << air.getCountry() << endl;
+        std::cout << " - " << air.getCode() << ";\t" << air.getName() << " - " << air.getCountry() << "\n";
     }
     printFooterOption();
 }
@@ -38,6 +38,7 @@ void StatisticsMenu::flightsOutAirport() {
  */
 void StatisticsMenu::flightsPerCityAirline() {
     int option;
+    StatisticsController controller;
     std::cout << "Choose an option:\n";
     std::cout << "1) Airline \n";
     std::cout << "2) City \n";
@@ -50,7 +51,7 @@ void StatisticsMenu::flightsPerCityAirline() {
                 std::cout << "Enter airline code: ";
                 cin >> code;
                 std::cout << "\n***********************************************************\n";
-                std::cout << "\n - Number of flights made by this airline: " << StatisticsController::numberOfFlightsPerAirline(code) << endl;
+                std::cout << "\n - Number of flights made by this airline: " << controller.numberOfFlightsPerAirline(code) << "\n";
                 break;
             }
             case 2: {
@@ -58,7 +59,7 @@ void StatisticsMenu::flightsPerCityAirline() {
                 std::cout << "Enter the name of the city: ";
                 cin >> name;
                 std::cout << "\n***********************************************************\n";
-                std::cout << "\n - Number of flights in this city: " << StatisticsController::numberOfFlightsPerCity(name) << endl;
+                std::cout << "\n - Number of flights in this city: " << controller.numberOfFlightsPerCity(name) << "\n";
                 break;
             }
             default: std::cout << "Invalid option, please try again: ";
@@ -72,6 +73,7 @@ void StatisticsMenu::flightsPerCityAirline() {
  */
 void StatisticsMenu::airportToCountries() {
     int option;
+    StatisticsController controller;
     std::cout << "Choose an option:\n";
     std::cout << "1) Airport \n";
     std::cout << "2) City \n";
@@ -83,10 +85,9 @@ void StatisticsMenu::airportToCountries() {
                 string code;
                 std::cout << "Enter airport code: ";
                 cin >> code;
-                set<string> countries = StatisticsController::numberOfCountriesForThisAirport(code);
+                set<string> countries = controller.countriesForThisAirport(code);
                 std::cout << "\n***********************************************************\n";
-                std::cout << "\n Number of countries this airport flies to: " << countries.size() << endl;
-                std::cout << endl;
+                std::cout << "\n Number of countries this airport flies to: " << countries.size() << "\n\n";
                 for(const string& c: countries){
                     std::cout << " - " << c << "\n";
                 }
@@ -96,10 +97,9 @@ void StatisticsMenu::airportToCountries() {
                 string name;
                 std::cout << "Enter the name of the city: ";
                 cin >> name;
-                set<string> countries = StatisticsController::numberOfCountriesForThisCity(name);
+                set<string> countries = controller.countriesForThisCity(name);
                 std::cout << "\n***********************************************************\n";
-                std::cout << "\n Number of countries this city flies to: " << countries.size() << endl;
-                std::cout << endl;
+                std::cout << "\n Number of countries this city flies to: " << countries.size() << "\n\n";
                 for(const string& c: countries){
                     std::cout << " - " << c << "\n";
                 }
@@ -208,7 +208,7 @@ void StatisticsMenu::maxTrip() {
 }
 
 /**
- * @brief Displays the airports that are essential to the network's capability.
+ * @brief Displays the airports with the greatest air traffic capacity.
  */
 void StatisticsMenu::topKAirports() {
     int k;

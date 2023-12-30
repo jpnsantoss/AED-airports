@@ -38,20 +38,21 @@ size_t StatisticsController::getTotalFlights() {
  * @param identifier - the origin airport code.
  * @return The number of flights.
  */
-int StatisticsController::numberOfFlightsOutAirport(string &identifier) {
-    int num = 0;
-    Dataset* dataset = Dataset::getInstance();
-
-    for (char& c: identifier)
-        c = (char)toupper(c);
-    Airport airport = FlightController::findAirport(identifier);
-
-    for (const Flight& f : dataset->getFlights()) {
-        if(f.getSource().getAirportCode() == airport.getAirportCode()) {
-            num++;
-        }
+size_t StatisticsController::numberOfFlightsOutAirport(string &identifier) {
+    string upperId;
+    for (char c: identifier) {
+        upperId += (char)toupper(c);
     }
-    return num;
+
+    Airport airport = FlightController::findAirport(upperId);
+
+    Vertex<Airport>* airportVertex = airportGraph.findVertex(airport);
+
+    if (airportVertex == nullptr) {
+        return 0;
+    }
+
+    return airportVertex->getAdj().size();
 }
 
 /**
@@ -62,16 +63,17 @@ int StatisticsController::numberOfFlightsOutAirport(string &identifier) {
  */
 set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
     set<Airline> airlines;
-    Dataset* dataset = Dataset::getInstance();
+    string upperId;
+    for (char c: identifier) {
+        upperId += (char)toupper(c);
+    }
 
-    for (char& c: identifier)
-        c = (char)toupper(c);
-    Airport airport = FlightController::findAirport(identifier);
+    Airport airport = FlightController::findAirport(upperId);
 
-    for (const Flight& f : dataset->getFlights()) {
-        if(f.getSource().getAirportCode() == airport.getAirportCode()) {
-            airlines.insert(f.getAirline());
-        }
+    Vertex<Airport>* airportVertex = airportGraph.findVertex(airport);
+
+    for(const Edge<Airport>& edge: airportVertex->getAdj()) {
+        airlines.insert(edge.getAirline());
     }
 
     return airlines;
@@ -85,31 +87,39 @@ set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
  */
 int StatisticsController::numberOfFlightsPerAirline(string &identifier) {
     int num = 0;
-    Dataset* dataset = Dataset::getInstance();
-    for (char& c: identifier)
-        c = (char)toupper(c);
+    string upperId;
+    for (char c: identifier) {
+        upperId += (char)toupper(c);
+    }
 
-    for(const Flight& f: dataset->getFlights()){
-        if(f.getAirline().getCode() == identifier)
-            num++;
+    for (const Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        for (const Edge<Airport>& edge : vertex->getAdj()) {
+            if (edge.getAirline().getCode() == upperId) {
+                num++;
+            }
+        }
     }
 
     return num;
 }
 
+
 /**
  * @brief Gets the number of flights involving a specific city (as origin or destination).
  * Complexity: O(n), where n is the number of flights in the dataset.
- * @param identifier - the name of the city.
+ * @param city - the name of the city.
  * @return The number of flights involving the specified city.
  */
-int StatisticsController::numberOfFlightsPerCity(string &identifier) {
+int StatisticsController::numberOfFlightsPerCity(string &city) {
     int num = 0;
-    Dataset* dataset = Dataset::getInstance();
+    vector<Vertex<Airport>*> airports = airportGraph.getVertexSet();
+    calculateIndegrees(airports);
 
-    for(const Flight& f: dataset->getFlights()){
-        if(f.getSource().getCity() == identifier || f.getTarget().getCity() == identifier)
-            num++;
+    for (const Vertex<Airport>* vertex : airports) {
+        if(vertex->getInfo().getCity() == city) {
+            num += vertex->getAdj().size();
+            num += vertex->getIndegree();
+        }
     }
 
     return num;
@@ -120,17 +130,19 @@ int StatisticsController::numberOfFlightsPerCity(string &identifier) {
  * Complexity: O(n), where n is the code of adjacent airports.
  * @param identifier - the origin airport code.
  * @return A set of countries that the specified airport flies to.
- */
-set<string> StatisticsController::numberOfCountriesForThisAirport(string &identifier) {
-    Dataset* dataset = Dataset::getInstance();
+ */set<string> StatisticsController::countriesForThisAirport(string &identifier) {
     set<string> countries;
+    string upperId;
+    for (char c: identifier) {
+        upperId += (char)toupper(c);
+    }
 
-    for (char& c: identifier)
-        c = (char)toupper(c);
+    Airport airport = FlightController::findAirport(upperId);
 
-    for(const Flight& f: dataset->getFlights()){
-        if(f.getSource().getAirportCode() == identifier)
-            countries.insert(f.getTarget().getCountry());
+    Vertex<Airport>* airportVertex = airportGraph.findVertex(airport);
+
+    for(const Edge<Airport>& edge: airportVertex->getAdj()) {
+        countries.insert(edge.getDest()->getInfo().getCountry());
     }
 
     return countries;
@@ -142,13 +154,15 @@ set<string> StatisticsController::numberOfCountriesForThisAirport(string &identi
  * @param code - the origin airport code.
  * @return The number of destination airports.
  */
-set<string> StatisticsController::numberOfCountriesForThisCity(string &identifier) {
-    Dataset* dataset = Dataset::getInstance();
+set<string> StatisticsController::countriesForThisCity(string &city) {
     set<string> countries;
 
-    for(const Flight& f: dataset->getFlights()){
-        if(f.getSource().getCity() == identifier)
-            countries.insert(f.getTarget().getCountry());
+    for (const Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        if(vertex->getInfo().getCity() == city) {
+            for (const Edge<Airport> &edge: vertex->getAdj()) {
+                countries.insert(edge.getDest()->getInfo().getCountry());
+            }
+        }
     }
 
     return countries;
@@ -474,6 +488,49 @@ void StatisticsController::dfsForEssentialAirports(Vertex<Airport>* vertex, unor
             if (poppedVertex == vertex) {
                 break;
             }
+        }
+    }
+}
+
+bool compareAirportsByTotalDegree(const Vertex<Airport>* a1, const Vertex<Airport>* a2) {
+    unsigned long totalDegreeA1 = a1->getIndegree() + a1->getAdj().size();
+    unsigned long totalDegreeA2 = a2->getIndegree() + a2->getAdj().size();
+    return totalDegreeA1 > totalDegreeA2; // Higher degree comes first
+}
+
+std::vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k) {
+    vector<Vertex<Airport>*> airports;
+    vector<pair<Airport, unsigned long>> topAirports;
+
+    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        airports.push_back(vertex);
+    }
+
+    calculateIndegrees(airports);
+
+    std::sort(airports.begin(), airports.end(), compareAirportsByTotalDegree);
+
+    // Insert the top-k airports into the set
+    for (int i = 0; i < k && i < airports.size(); i++) {
+        Airport airport = airports[i]->getInfo();
+        unsigned long totalDegree = airports[i]->getIndegree() + airports[i]->getAdj().size();
+        topAirports.emplace_back(airport, totalDegree);
+    }
+
+    return topAirports;
+}
+
+
+void StatisticsController::calculateIndegrees(const vector<Vertex<Airport>*>& airports) {
+    // Reset indegree for all vertices
+    for (Vertex<Airport>* v : airports) {
+        v->setIndegree(0);
+    }
+
+    for (Vertex<Airport>* v : airports) {
+        for (const Edge<Airport>& edge : v->getAdj()) {
+            Vertex<Airport>* dest = edge.getDest();
+            dest->setIndegree(dest->getIndegree()+1);
         }
     }
 }
