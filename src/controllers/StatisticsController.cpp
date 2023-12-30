@@ -316,8 +316,6 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
 /**
  * @brief Depth-first search to find all paths starting from a vertex.
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
- * @param
- * @param
  */
 void dfsAllPaths(Vertex<Airport>* v, std::vector<Airport>& path, int& maxStops, std::vector<std::pair<Airport, Airport>>& maxPaths) {
     v->setProcessing(true);
@@ -364,6 +362,11 @@ std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips()
     return maxPaths;
 }
 
+/**
+ * @brief Finds airports that are essential to the network's capability.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @return An unordered set of essential airports.
+ */
 unordered_set<Airport> StatisticsController::findEssentialAirports() {
     int index = 1;
     unordered_set<Airport> essentialAirports;
@@ -382,6 +385,14 @@ unordered_set<Airport> StatisticsController::findEssentialAirports() {
     return essentialAirports;
 }
 
+/**
+ * @brief Performs DFS from a specific vertex to identify essential airports.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param vertex - the current vertex.
+ * @param essentialAirports - set to store essential airports.
+ * @param vertexStack - the stack that tracks the visited vertices during the execution of DFS.
+ * @param index - the index to identify the vertices.
+ */
 void StatisticsController::dfsForEssentialAirports(Vertex<Airport>* vertex, unordered_set<Airport>& essentialAirports, stack<Vertex<Airport>*>& vertexStack, int& index) {
     vertex->setNum(index);
     vertex->setLow(index);

@@ -193,10 +193,18 @@ void StatisticsMenu::numberDestinationXstops() {
 }
 
 /**
- * @brief
+ * @brief Displays pairs of airports representing maximum-stop trips.
  */
 void StatisticsMenu::maxTrip() {
-
+    StatisticsController controller;
+    std::vector<std::pair<Airport, Airport>> trips = controller.getMaximumTrips();
+    std::cout << "\n***********************************************************\n";
+    std::cout << "\n Number of trips with maximum stops: " << trips.size() << endl;
+    std::cout << endl;
+    for (const auto& p : trips) {
+        std::cout << "Source: " << p.first.getAirportName() << " - Destination: " << p.second.getAirportName();
+    }
+    printFooterOption();
 }
 
 /**
