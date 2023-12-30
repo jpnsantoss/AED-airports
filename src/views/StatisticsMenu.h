@@ -45,7 +45,7 @@ public:
             case 5: numberDestinations(); break;
             case 6: numberDestinationXstops(); break;
             case 7: maxTrip(); break;
-            /*case 8: topKAirport(); break;*/
+            case 8: topKAirports(); break;
             case 9: essentialAirports(); break;
             case 0: backToMain(); break;
         }
@@ -58,7 +58,7 @@ private:
     void numberDestinations();
     void numberDestinationXstops();
     void maxTrip();
-    void topKAirport();
+    void topKAirports();
     void essentialAirports();
     static void backToMain();
     void printFooterOption();

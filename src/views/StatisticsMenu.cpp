@@ -210,6 +210,23 @@ void StatisticsMenu::maxTrip() {
 /**
  * @brief Displays the airports that are essential to the network's capability.
  */
+void StatisticsMenu::topKAirports() {
+    int k;
+    StatisticsController controller;
+    std::cout << "Enter the top numbers of airports you want to see: ";
+    cin >> k;
+    vector<pair<Airport, unsigned long>> airports = controller.topKAirTraffic(k);
+    std::cout << "\n***********************************************************\n";
+    std::cout << "\n\tTop-" << k << " Airports with Greatest Air Traffic Capacity\n\n";
+    for(int i = 0; i < k && i < airports.size(); i++){
+        std::cout << "\t" << i+1 << "° - " << airports[i].first.getAirportName() << ": " << airports[i].second << "\n";
+    }
+    printFooterOption();
+}
+
+/**
+ * @brief Displays the airports that are essential to the network's capability.
+ */
 void StatisticsMenu::essentialAirports() {
     StatisticsController statisticsController;
     unordered_set<Airport> essentialAirports = statisticsController.findEssentialAirports();
