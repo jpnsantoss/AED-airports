@@ -411,8 +411,8 @@ void StatisticsController::calculateIndegrees(const vector<Vertex<Airport>*>& ai
 
 /**
  * @brief Returns the top-k airports with the highest air traffic based on total indegree.
- * @param k - number of airports to retrieve.
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param k - number of airports to retrieve.
  * @return A vector of pairs representing the airports and their total degree, sorted in descending order by degree.
  */
 std::vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k) {
