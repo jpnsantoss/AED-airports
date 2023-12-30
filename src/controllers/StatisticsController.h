@@ -51,7 +51,6 @@ public:
     void dfsForEssentialAirports(Vertex<Airport> *vertex, unordered_set<Airport> &essentialAirports,
                                  stack<Vertex<Airport> *> &vertexStack, int &index);
 
-    void calculateIndegrees(const vector<Vertex<Airport> *> &airports);
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H
