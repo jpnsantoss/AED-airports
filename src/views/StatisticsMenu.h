@@ -56,9 +56,7 @@ public:
             case 7: {
                 break;
             }
-            case 8: {
-                break;
-            }
+            case 8: topKAirports(); break;
             case 9: {
                 essentialAirports();
                 break;
@@ -73,6 +71,7 @@ private:
     static void backToMain();
     void printFooterOption();
     void essentialAirports();
+    void topKAirports();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSMENU_H

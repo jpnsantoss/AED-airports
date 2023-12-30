@@ -10,7 +10,7 @@ using namespace std;
 class StatisticsController {
 private:
     Graph<Airport> airportGraph;
-
+    void calculateIndegrees(const vector<Vertex<Airport>*>& airports);
 public:
     StatisticsController();
 
@@ -30,17 +30,17 @@ public:
 
     size_t getNumberOfReachableCitiesWithMaxStops(const Airport &airport, int maxStops) const;
 
-    static set<string> numberOfCountriesForThisAirport(string &identifier);
+    set<string> countriesForThisAirport(string &identifier);
 
-    static int numberOfFlightsPerAirline(string &identifier);
+    int numberOfFlightsPerAirline(string &identifier);
 
-    static int numberOfFlightsPerCity(string &identifier);
+    int numberOfFlightsPerCity(string &identifier);
 
-    static set<Airline> setOfFlightsOutAirport(string &identifier);
+    set<Airline> setOfFlightsOutAirport(string &identifier);
 
-    static int numberOfFlightsOutAirport(string &identifier);
+    size_t numberOfFlightsOutAirport(string &identifier);
 
-    static set<string> numberOfCountriesForThisCity(string &identifier);
+    set<string> countriesForThisCity(string &identifier);
 
     vector<pair<Airport, Airport>> getMaximumTrips();
 
@@ -48,6 +48,8 @@ public:
 
     void dfsForEssentialAirports(Vertex<Airport> *vertex, unordered_set<Airport> &essentialAirports,
                                  stack<Vertex<Airport> *> &vertexStack, int &index);
+
+    vector<pair<Airport, unsigned long>> topKAirTraffic(int k);
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H
