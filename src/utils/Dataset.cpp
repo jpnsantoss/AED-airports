@@ -1,8 +1,7 @@
 
-#include <fstream>
-#include <sstream>
+
 #include "Dataset.h"
-#include <iostream>
+
 
 Dataset* Dataset::dataset = nullptr;
 
@@ -163,7 +162,7 @@ Airport Dataset::findAirportByCode(const string &code) {
             return airport;
         }
     }
-    throw std::runtime_error("Airport not found");
+    throw runtime_error("Airport not found");
 }
 
 /**
@@ -178,5 +177,14 @@ Airline Dataset::findAirlineByCode(const string &code) {
             return airline;
         }
     }
-    throw std::runtime_error("Airline not found");
+    throw runtime_error("Airline not found");
+}
+
+Flight* Dataset::findFlight(const Airport& source, const Airport& destination) {
+    for (Flight& flight : flights) {
+        if (flight.getSource() == source && flight.getTarget() == destination) {
+            return &flight;
+        }
+    }
+    return nullptr;
 }

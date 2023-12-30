@@ -12,6 +12,7 @@ Flight::Flight(const Airport &source, const Airport &target, const Airline &airl
         : source(source), target(target), airline(airline), distance(source.getLocation().calculateDistanceTo(target.getLocation())) {}
 
 // Getters
+
 /**
  * @brief Gets the source airport of the flight.
  * @return The source airport.
@@ -45,6 +46,7 @@ double Flight::getDistance() const {
 }
 
 // Setters
+
 /**
  * @brief Sets the source airport of the flight.
  * @param source - The new source airport.

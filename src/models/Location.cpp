@@ -1,8 +1,11 @@
 
 #include "Location.h"
-#include <cmath>
+
 
 // Constructor
+/**
+ * @brief Default constructor for Location class.
+ */
 Location::Location() {
     this->latitude = 0.0;
     this->longitude = 0.0;
@@ -16,6 +19,7 @@ Location::Location() {
 Location::Location(double latitude, double longitude) : latitude(latitude), longitude(longitude) {}
 
 // Getters
+
 /**
  * @brief Gets the latitude of the location.
  * @return The latitude.
@@ -33,6 +37,7 @@ double Location::getLongitude() const {
 }
 
 // Setters
+
 /**
  * @brief Sets the latitude of the location.
  * @param latitude - The new latitude.
@@ -50,6 +55,7 @@ void Location::setLongitude(double longitude) {
 }
 
 // Distance calculation
+
 /**
  * @brief Calculates the distance between two locations.
  * @param other - The other location for distance calculation.

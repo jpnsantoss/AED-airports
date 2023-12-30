@@ -3,7 +3,9 @@
 #define PROJECT_AED_AIRPORTS_AIRLINE_H
 
 #include <string>
+
 using namespace std;
+
 class Airline {
 private:
     string code;
@@ -27,6 +29,7 @@ public:
     void setCallsign(const string &callsign);
     void setCountry(const string &country);
 
+    // Operators
     bool operator<(const Airline& other) const {
         return this->code < other.code;
     }

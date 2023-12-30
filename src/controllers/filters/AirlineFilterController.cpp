@@ -6,7 +6,7 @@
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges in the original graph.
  * @param airlines - a vector of airline names to filter the airports.
  */
-AirlineFilterController::AirlineFilterController(const std::vector<std::string>& airlines) {
+AirlineFilterController::AirlineFilterController(const vector<string>& airlines) {
     Dataset* dataset = Dataset::getInstance();
     Graph<Airport> originalGraph = dataset->getAirportGraph();
 
