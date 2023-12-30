@@ -3,7 +3,7 @@
 #include "BestOption.h"
 
 void MainMenu::display() {
-    system("cls");
+    system("clear");
     cout << "**********************************************\n"
               << "*                                            *\n"
               << "*         Welcome to AED Airports            *\n"
