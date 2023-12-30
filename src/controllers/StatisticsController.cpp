@@ -377,12 +377,24 @@ std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips()
     return maxPaths;
 }
 
+/**
+ * @brief Compares two airports based on their total degrees.
+ * Complexity: O(1)
+ * @param a1 - Pointer to the first airport vertex.
+ * @param a2 - Pointer to the second airport vertex.
+ * @return True if the first airport has an higher total degree than the second; false otherwise.
+ */
 bool compareAirportsByTotalDegree(const Vertex<Airport>* a1, const Vertex<Airport>* a2) {
     unsigned long totalDegreeA1 = a1->getIndegree() + a1->getAdj().size();
     unsigned long totalDegreeA2 = a2->getIndegree() + a2->getAdj().size();
     return totalDegreeA1 > totalDegreeA2; // Higher degree comes first
 }
 
+/**
+ * @brief Calculates and updates the indegrees for a given vector of airport vertices.
+ * Complexity: O(V*log(V), where V is the number of vertices.
+ * @param airports - vector containing airport vertices.
+ */
 void StatisticsController::calculateIndegrees(const vector<Vertex<Airport>*>& airports) {
     // Reset indegree for all vertices
     for (Vertex<Airport>* v : airports) {
@@ -397,6 +409,12 @@ void StatisticsController::calculateIndegrees(const vector<Vertex<Airport>*>& ai
     }
 }
 
+/**
+ * @brief Returns the top-k airports with the highest air traffic based on total indegree.
+ * @param k - number of airports to retrieve.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @return A vector of pairs representing the airports and their total degree, sorted in descending order by degree.
+ */
 std::vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k) {
     vector<Vertex<Airport>*> airports;
     vector<pair<Airport, unsigned long>> topAirports;
@@ -488,49 +506,6 @@ void StatisticsController::dfsForEssentialAirports(Vertex<Airport>* vertex, unor
             if (poppedVertex == vertex) {
                 break;
             }
-        }
-    }
-}
-
-bool compareAirportsByTotalDegree(const Vertex<Airport>* a1, const Vertex<Airport>* a2) {
-    unsigned long totalDegreeA1 = a1->getIndegree() + a1->getAdj().size();
-    unsigned long totalDegreeA2 = a2->getIndegree() + a2->getAdj().size();
-    return totalDegreeA1 > totalDegreeA2; // Higher degree comes first
-}
-
-std::vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k) {
-    vector<Vertex<Airport>*> airports;
-    vector<pair<Airport, unsigned long>> topAirports;
-
-    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
-        airports.push_back(vertex);
-    }
-
-    calculateIndegrees(airports);
-
-    std::sort(airports.begin(), airports.end(), compareAirportsByTotalDegree);
-
-    // Insert the top-k airports into the set
-    for (int i = 0; i < k && i < airports.size(); i++) {
-        Airport airport = airports[i]->getInfo();
-        unsigned long totalDegree = airports[i]->getIndegree() + airports[i]->getAdj().size();
-        topAirports.emplace_back(airport, totalDegree);
-    }
-
-    return topAirports;
-}
-
-
-void StatisticsController::calculateIndegrees(const vector<Vertex<Airport>*>& airports) {
-    // Reset indegree for all vertices
-    for (Vertex<Airport>* v : airports) {
-        v->setIndegree(0);
-    }
-
-    for (Vertex<Airport>* v : airports) {
-        for (const Edge<Airport>& edge : v->getAdj()) {
-            Vertex<Airport>* dest = edge.getDest();
-            dest->setIndegree(dest->getIndegree()+1);
         }
     }
 }
