@@ -1,4 +1,5 @@
 
+#include <unordered_set>
 #include "StatisticsController.h"
 #include "FlightController.h"
 
@@ -361,4 +362,64 @@ std::vector<std::pair<Airport, Airport>> StatisticsController::getMaximumTrips()
     }
 
     return maxPaths;
+}
+
+unordered_set<Airport> StatisticsController::findEssentialAirports() {
+    int index = 1;
+    unordered_set<Airport> essentialAirports;
+    stack<Vertex<Airport>*> vertexStack;
+    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        vertex->setVisited(false);
+        vertex->setProcessing(false);
+    }
+
+    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        if (!vertex->isVisited()) {
+            dfsForEssentialAirports(vertex, essentialAirports, vertexStack, index);
+        }
+    }
+
+    return essentialAirports;
+}
+
+void StatisticsController::dfsForEssentialAirports(Vertex<Airport>* vertex, unordered_set<Airport>& essentialAirports, stack<Vertex<Airport>*>& vertexStack, int& index) {
+    vertex->setNum(index);
+    vertex->setLow(index);
+    vertex->setVisited(true);
+    index++;
+
+    vertexStack.push(vertex);
+    vertex->setProcessing(true);
+
+    int childCount = 0;
+    bool isEssential = false;
+
+    for (auto &edge : vertex->getAdj()) {
+        Vertex<Airport>* adjacentVertex = edge.getDest();
+        if (!adjacentVertex->isVisited()) {
+            childCount++;
+            dfsForEssentialAirports(adjacentVertex, essentialAirports, vertexStack, index);
+            vertex->setLow(min(vertex->getLow(), adjacentVertex->getLow()));
+
+            if (adjacentVertex->getLow() >= vertex->getNum()) {
+                isEssential = true;
+            }
+        } else if (adjacentVertex->isProcessing()) {
+            vertex->setLow(min(vertex->getLow(), adjacentVertex->getNum()));
+        }
+    }
+
+    if ((vertex->getNum() == vertex->getLow() && childCount > 1) || (vertex->getNum() != vertex->getLow() && isEssential)) {
+        essentialAirports.insert(vertex->getInfo());
+
+        while (!vertexStack.empty()) {
+            Vertex<Airport>* poppedVertex = vertexStack.top();
+            vertexStack.pop();
+            poppedVertex->setProcessing(false);
+
+            if (poppedVertex == vertex) {
+                break;
+            }
+        }
+    }
 }

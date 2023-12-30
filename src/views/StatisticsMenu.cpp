@@ -200,6 +200,21 @@ void StatisticsMenu::maxTrip() {
 }
 
 /**
+ * @brief Displays the airports that are essential to the network's capability.
+ */
+void StatisticsMenu::essentialAirports() {
+    StatisticsController statisticsController;
+    unordered_set<Airport> essentialAirports = statisticsController.findEssentialAirports();
+    std::cout << "\n***********************************************************\n";
+    std::cout << "\n Number of essential airports: " << essentialAirports.size() << endl;
+    std::cout << endl;
+    for(const Airport& a: essentialAirports){
+        std::cout << " - " << a.getAirportCode() << ";\t" << a.getAirportName() << " - " << a.getCity() << endl;
+    }
+    printFooterOption();
+}
+
+/**
  * @brief Navigates back to the main menu.
  */
 void StatisticsMenu::backToMain() {
@@ -215,11 +230,10 @@ void StatisticsMenu::printFooterOption(){
     std::cout << "\n                                                   0) Back   "
               << "\n***********************************************************\n"
               << "Option: ";
-    do {
-        std::cin >> option;
-        if (option != 0)
-            std::cout << "Invalid option, please try again: ";
-        else
-            this->display();
-    } while (option != 0);
+    while(!(std::cin >> option) || option != 0) {
+        std::cin.clear(); // clear the error state
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore the invalid input
+        std::cout << "Invalid option, please try again: ";
+    }
+    this->display();
 }

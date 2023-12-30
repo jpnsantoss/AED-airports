@@ -3,6 +3,11 @@
 #include <cmath>
 
 // Constructor
+Location::Location() {
+    this->latitude = 0.0;
+    this->longitude = 0.0;
+}
+
 /**
  * @brief Constructor for Location class.
  * @param latitude - the latitude of the location.

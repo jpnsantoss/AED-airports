@@ -2,6 +2,14 @@
 #include "Airport.h"
 
 // Constructor
+Airport::Airport() {
+    this->airportCode = "";
+    this->airportName = "";
+    this->city = "";
+    this->country = "";
+    this->location = Location();
+}
+
 /**
  * @brief Constructor for Airport class.
  * @param code - the airport code.
