@@ -181,7 +181,7 @@ Airline Dataset::findAirlineByCode(const string &code) {
 }
 
 /**
- * @brief Finds an airline by its code.
+ * @brief Finds a flight based on source and destination airports.
  * Complexity: O(n), where n is the number of flights in the dataset.
  * @param source - the source airport of the flight.
  * @param destination - the destination airport of the flight.
