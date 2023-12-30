@@ -1,7 +1,14 @@
-// MinimizeAirlinesController.cpp
 #include "MinimizeAirlinesController.h"
 #include <stdexcept>
 #include <set>
+
+/**
+ * @brief Gets teh shortest paths between two airports using BFS.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges in the airport graph.
+ * @param origin - the origin airport code;
+ * @param destination - the destination airport code.
+ * @return A vector of vectors, each representing one of the shortest path.
+ */
 vector<vector<Airport>> MinimizeAirlinesController::getShortestPathsBFS(const Airport &origin, const Airport &destination) {
     map<Vertex<Airport>*, vector<Vertex<Airport>*>> prev;
     map<Vertex<Airport>*, set<string>> airlinesUsed;

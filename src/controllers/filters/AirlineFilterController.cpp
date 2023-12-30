@@ -1,10 +1,11 @@
-//
-// Created by jpsantos on 26-12-2023.
-//
 
-// AirlineFilterController.cpp
 #include "AirlineFilterController.h"
 
+/**
+ * @brief Filters the airports based on the provided list of airlines and creates a graph with only the airports serviced by the specified airlines.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges in the original graph.
+ * @param airlines - a vector of airline names to filter the airports.
+ */
 AirlineFilterController::AirlineFilterController(const std::vector<std::string>& airlines) {
     Dataset* dataset = Dataset::getInstance();
     Graph<Airport> originalGraph = dataset->getAirportGraph();

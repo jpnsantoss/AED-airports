@@ -18,17 +18,17 @@ public:
 
     static size_t getTotalFlights() ;
 
-    size_t getNumberOfDestinationAirports(const Airport &airport) const;
+    size_t getNumberOfDestinationAirports(const string& code) const;
 
-    size_t getNumberOfDestinationCountries(const Airport &airport) const;
+    size_t getNumberOfDestinationCountries(const string& code) const;
 
-    size_t getNumberOfDestinationCities(const Airport &airport) const;
+    size_t getNumberOfDestinationCities(const string& code) const;
 
-    int getNumberOfReachableAirportsWithMaxStops(const Airport &airport, int maxStops) const;
+    int getNumberOfReachableAirportsWithMaxStops(const string& code, int maxStops) const;
 
-    size_t getNumberOfReachableCountriesWithMaxStops(const Airport &airport, int maxStops) const;
+    size_t getNumberOfReachableCountriesWithMaxStops(const string& code, int maxStops) const;
 
-    size_t getNumberOfReachableCitiesWithMaxStops(const Airport &airport, int maxStops) const;
+    size_t getNumberOfReachableCitiesWithMaxStops(const string& code, int maxStops) const;
 
     set<string> countriesForThisAirport(string &identifier);
 
@@ -44,12 +44,14 @@ public:
 
     vector<pair<Airport, Airport>> getMaximumTrips();
 
+    vector<pair<Airport, unsigned long>> topKAirTraffic(int k);
+
     unordered_set<Airport> findEssentialAirports();
 
     void dfsForEssentialAirports(Vertex<Airport> *vertex, unordered_set<Airport> &essentialAirports,
                                  stack<Vertex<Airport> *> &vertexStack, int &index);
 
-    vector<pair<Airport, unsigned long>> topKAirTraffic(int k);
+    void calculateIndegrees(const vector<Vertex<Airport> *> &airports);
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H

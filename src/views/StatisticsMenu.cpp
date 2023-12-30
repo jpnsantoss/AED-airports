@@ -1,6 +1,3 @@
-//
-// Created by Maureen Ah-shu🍩 on 27/12/2023.
-//
 
 #include "StatisticsMenu.h"
 #include "MainMenu.h"
@@ -8,6 +5,19 @@
 #include "controllers/StatisticsController.h"
 #include <set>
 
+/**
+ * @brief Displays the number all airports and airlines of the dataset.
+ */
+void StatisticsMenu::numberAirportsFlights() {
+    std::cout << "\n***********************************************************\n"
+              << "Global number of airports: " << StatisticsController::getTotalAirports() << "\n"
+              << "Global number of available flights: " << StatisticsController::getTotalFlights() << endl;
+    printFooterOption();
+}
+
+/**
+ * @brief Displays the number of flights out of a given airport and the airlines that flight out of it.
+ */
 void StatisticsMenu::flightsOutAirport() {
     string code;
     StatisticsController controller;
@@ -23,6 +33,9 @@ void StatisticsMenu::flightsOutAirport() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of flights per city or airline, depending on user input.
+ */
 void StatisticsMenu::flightsPerCityAirline() {
     int option;
     StatisticsController controller;
@@ -55,6 +68,9 @@ void StatisticsMenu::flightsPerCityAirline() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the number of flights per city or airline, depending on user input.
+ */
 void StatisticsMenu::airportToCountries() {
     int option;
     StatisticsController controller;
@@ -95,18 +111,105 @@ void StatisticsMenu::airportToCountries() {
     printFooterOption();
 }
 
-void StatisticsMenu::essentialAirports() {
-    StatisticsController statisticsController;
-    unordered_set<Airport> essentialAirports = statisticsController.findEssentialAirports();
+/**
+ * @brief Displays the number of destinations available for a given airport.
+ */
+void StatisticsMenu::numberDestinations() {
+    StatisticsController controller;
+    string code;
+    std::cout << "For which airport are you inquiring about the number of destinations available?\n"
+              << "Enter airport code:";
+    cin >> code;
+    int option;
+    std::cout << "Choose an option:\n"
+              << "1) Airports \n"
+              << "2) Countries \n"
+              << "3) Cities \n"
+              << "Option: ";
+    do {
+        std::cin >> option;
+        switch (option) {
+            case 1: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of airports available: " << controller.getNumberOfDestinationAirports(code) << endl;
+                break;
+            }
+            case 2: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of countries available: " << controller.getNumberOfDestinationCountries(code) << endl;
+                break;
+            }
+            case 3: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of cities available: " << controller.getNumberOfDestinationCities(code) << endl;
+                break;
+            }
+            default: std::cout << "Invalid option, please try again: ";
+        }
+    } while (option != 1 && option != 2 && option != 3);
+    printFooterOption();
+}
+
+/**
+ * @brief Displays the number of reachable destinations from a given airport in a maximum number of X stops (lay-overs).
+ */
+void StatisticsMenu::numberDestinationXstops() {
+    StatisticsController controller;
+    string code;
+    std::cout << "For which airport are you inquiring about the number of destinations available?\n"
+              << "Enter airport code:";
+    cin >> code;
+    int stops;
+    std::cout << "How many stops? ";
+    cin >> stops;
+    int option;
+    std::cout << "Choose an option:\n"
+              << "1) Airports \n"
+              << "2) Countries \n"
+              << "3) Cities \n"
+              << "Option: ";
+    do {
+        std::cin >> option;
+        switch (option) {
+            case 1: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of airports available: " << controller.getNumberOfReachableAirportsWithMaxStops(code, stops) << endl;
+                break;
+            }
+            case 2: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of countries available: " << controller.getNumberOfReachableCountriesWithMaxStops(code, stops) << endl;
+                break;
+            }
+            case 3: {
+                std::cout << "\n***********************************************************\n"
+                          << "\n Number of cities available: " << controller.getNumberOfReachableCitiesWithMaxStops(code, stops) << endl;
+                break;
+            }
+            default: std::cout << "Invalid option, please try again: ";
+        }
+    } while (option != 1 && option != 2 && option != 3);
+    printFooterOption();
+}
+
+/**
+ * @brief Displays pairs of airports representing maximum-stop trips.
+ */
+void StatisticsMenu::maxTrip() {
+    StatisticsController controller;
+    std::vector<std::pair<Airport, Airport>> trips = controller.getMaximumTrips();
     std::cout << "\n***********************************************************\n";
-    std::cout << "\n Number of essential airports: " << essentialAirports.size() << endl;
+    std::cout << "\n Number of trips with maximum stops: " << trips.size() << endl;
     std::cout << endl;
-    for(const Airport& a: essentialAirports){
-        std::cout << " - " << a.getAirportCode() << ";\t" << a.getAirportName() << " - " << a.getCity() << endl;
+    for (const auto& p : trips) {
+        std::cout << "Source: " << p.first.getAirportName() << " - Destination: " << p.second.getAirportName();
     }
     printFooterOption();
 }
 
+/**
+ * @brief Displays the airports with the greatest air traffic capacity.
+ */
 void StatisticsMenu::topKAirports() {
     int k;
     StatisticsController controller;
@@ -121,12 +224,32 @@ void StatisticsMenu::topKAirports() {
     printFooterOption();
 }
 
+/**
+ * @brief Displays the airports that are essential to the network's capability.
+ */
+void StatisticsMenu::essentialAirports() {
+    StatisticsController statisticsController;
+    unordered_set<Airport> essentialAirports = statisticsController.findEssentialAirports();
+    std::cout << "\n***********************************************************\n";
+    std::cout << "\n Number of essential airports: " << essentialAirports.size() << endl;
+    std::cout << endl;
+    for(const Airport& a: essentialAirports){
+        std::cout << " - " << a.getAirportCode() << ";\t" << a.getAirportName() << " - " << a.getCity() << endl;
+    }
+    printFooterOption();
+}
 
+/**
+ * @brief Navigates back to the main menu.
+ */
 void StatisticsMenu::backToMain() {
     MainMenu mainMenu;
     mainMenu.display();
 }
 
+/**
+ * @brief Displays the footer option and handles user input.
+ */
 void StatisticsMenu::printFooterOption(){
     int option;
     std::cout << "\n                                                   0) Back   "

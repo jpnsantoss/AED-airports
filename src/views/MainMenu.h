@@ -1,6 +1,3 @@
-//
-// Created by jpsantos on 17-12-2023.
-//
 
 #ifndef PROJECT_AED_AIRPORTS_MAINMENU_H
 #define PROJECT_AED_AIRPORTS_MAINMENU_H
