@@ -196,13 +196,18 @@ void StatisticsMenu::numberDestinationXstops() {
  * @brief Displays pairs of airports representing maximum-stop trips.
  */
 void StatisticsMenu::maxTrip() {
+    Dataset* dataset = Dataset::getInstance();
     StatisticsController controller;
-    vector<pair<Airport, Airport>> trips = controller.getMaximumTrips();
+    string code;
+    cout << "Enter airport code: ";
+    cin >> code;
+    Airport origin = dataset->findAirportByCode(code);
+    vector<Airport> longestTrip = controller.getMaximumTrips(origin);
     cout << "\n***********************************************************\n";
-    cout << "\n Number of trips with maximum stops: " << trips.size() << endl;
-    cout << endl;
-    for (const auto& p : trips) {
-        cout << "Source: " << p.first.getAirportName() << " - Destination: " << p.second.getAirportName();
+    cout << "\n Number of stops in the longest trip: " << longestTrip.size() - 1 << endl;
+    cout << "\n The longest trip: \n";
+    for (const auto& airport : longestTrip) {
+        cout << " -> " << airport.getAirportName() << " (" << airport.getCity() << ")" << "\n";
     }
     printFooterOption();
 }
