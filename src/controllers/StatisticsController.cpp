@@ -328,53 +328,60 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
     return reachableCities.size();
 }
 
-/**
- * @brief Depth-first search to find all paths starting from a vertex.
- * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
- */
-void dfsAllPaths(Vertex<Airport>* v, vector<Airport>& path, int& maxStops, vector<pair<Airport, Airport>>& maxPaths) {
-    v->setProcessing(true);
-    path.push_back(v->getInfo());
+vector<Airport> StatisticsController::getMaximumTrips(const Airport &origin) {
+    map<Vertex<Airport>*, Vertex<Airport>*> prev;
+    queue<Vertex<Airport>*> queue;
 
-    if (path.size() > maxStops) {
-        maxStops = path.size();
-        maxPaths.clear();
-        maxPaths.push_back(make_pair(path.front(), path.back()));
-    } else if (path.size() == maxStops) {
-        maxPaths.push_back(make_pair(path.front(), path.back()));
+    Vertex<Airport>* originVertex = airportGraph.findVertex(origin);
+    if (originVertex == nullptr) {
+        throw runtime_error("Origin airport not found");
     }
 
-    for (const Edge<Airport>& e : v->getAdj()) {
-        if (!e.getDest()->isProcessing()) {
-            dfsAllPaths(e.getDest(), path, maxStops, maxPaths);
+    for(Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        vertex->setVisited(false);
+    }
+
+    originVertex->setVisited(true);
+    queue.push(originVertex);
+
+    Vertex<Airport>* farthestVertex = originVertex;
+    int maxDistance = 0;
+    while (!queue.empty()) {
+        Vertex<Airport>* vertex = queue.front();
+        queue.pop();
+
+        for (const Edge<Airport> &edge : vertex->getAdj()) {
+            Vertex<Airport>* neighbor = edge.getDest();
+            if (!neighbor->isVisited()) {
+                neighbor->setVisited(true);
+                queue.push(neighbor);
+                prev[neighbor] = vertex;
+
+                // Calculate the distance from the origin to the neighbor
+                int distance = 0;
+                for (Vertex<Airport>* v = neighbor; v != originVertex; v = prev[v]) {
+                    distance++;
+                }
+
+                // Update farthestVertex and maxDistance if necessary
+                if (distance > maxDistance) {
+                    farthestVertex = neighbor;
+                    maxDistance = distance;
+                }
+            }
         }
     }
 
-    v->setProcessing(false);
-    path.pop_back();
-}
-
-/**
- * @brief Gets a vector containing pairs of airports representing maximum-stop trips.
- * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
- * @return Vector containing pairs of airports representing maximum-stops trips.
- */
-vector<pair<Airport, Airport>> StatisticsController::getMaximumTrips() {
-    vector<Airport> path;
-    vector<pair<Airport, Airport>> maxPaths;
-    int maxStops = 0;
-
-    for (Vertex<Airport>* v : airportGraph.getVertexSet()) {
-        if (!v->isProcessing()) {
-            dfsAllPaths(v, path, maxStops, maxPaths);
-        }
+    // Build the longest trip from the prev map
+    vector<Airport> longestTrip;
+    for (Vertex<Airport>* vertex = farthestVertex; vertex != nullptr; vertex = prev[vertex]) {
+        longestTrip.push_back(vertex->getInfo());
     }
 
-    if (maxPaths.empty()) {
-        throw runtime_error("No path found");
-    }
+    // The longest trip is currently in reverse order, so reverse it
+    reverse(longestTrip.begin(), longestTrip.end());
 
-    return maxPaths;
+    return longestTrip;
 }
 
 /**

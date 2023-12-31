@@ -1,17 +1,11 @@
 #include "MinimizeAirlinesController.h"
 
-/**
- * @brief Gets the shortest paths between two airports using BFS.
- * Complexity: O(V+E), where V is the number of vertices and E the number of edges in the airport graph.
- * @param origin - the origin airport code;
- * @param destination - the destination airport code.
- * @return A vector of vectors, each representing one of the shortest path.
- */
+
 vector<vector<Airport>> MinimizeAirlinesController::getShortestPathsBFS(const Airport &origin, const Airport &destination) {
-    map<Vertex<Airport>*, vector<Vertex<Airport>*>> prev;
-    map<Vertex<Airport>*, set<string>> airlinesUsed;
+    map<Vertex<Airport>*, vector<pair<Vertex<Airport>*, set<string>>>> prev;
     queue<Vertex<Airport>*> queue;
     vector<vector<Airport>> paths;
+    vector<set<string>> airlinesUsedForPaths;
 
     Vertex<Airport>* originVertex = airportGraph.findVertex(origin);
     Vertex<Airport>* destinationVertex = airportGraph.findVertex(destination);
@@ -32,28 +26,49 @@ vector<vector<Airport>> MinimizeAirlinesController::getShortestPathsBFS(const Ai
 
         if (vertex->getInfo() == destination) {
             vector<Airport> path;
-            buildPaths(originVertex, destinationVertex, prev, path, paths);
-            return paths;
+            set<string> airlinesUsed;
+            buildPaths(originVertex, destinationVertex, prev, path, paths, airlinesUsed, airlinesUsedForPaths);
+            continue;
         }
 
         for (const Edge<Airport> &edge : vertex->getAdj()) {
             Vertex<Airport>* neighbor = edge.getDest();
             if (!neighbor->isVisited()) {
-                // Add the airline of the current edge to the set of airlines used to reach the neighbor
-                airlinesUsed[neighbor] = airlinesUsed[vertex];
-                airlinesUsed[neighbor].insert(edge.getAirline().getName());
-
-                // Only visit the neighbor if it leads to a path with less or equal number of different airlines
-                if (neighbor->isVisited() && airlinesUsed[neighbor].size() > airlinesUsed[vertex].size()) {
-                    continue;
-                }
-
                 neighbor->setVisited(true);
                 queue.push(neighbor);
-                prev[neighbor].push_back(vertex);
+                set<string> airlinesUsed = prev[vertex].empty() ? set<string>() : prev[vertex].back().second;
+                airlinesUsed.insert(edge.getAirline().getName());
+                prev[neighbor].emplace_back(vertex, airlinesUsed);
             }
         }
     }
 
-    return paths; // Return an empty vector if no path is found
+    // Find the path with the least number of airlines
+    size_t minAirlines = numeric_limits<size_t >::max();
+    vector<Airport> bestPath;
+    for (int i = 0; i < paths.size(); i++) {
+        if (airlinesUsedForPaths[i].size() < minAirlines) {
+            minAirlines = airlinesUsedForPaths[i].size();
+            bestPath = paths[i];
+        }
+    }
+
+    return vector<vector<Airport>>{bestPath}; // Return the path with the least number of airlines
+}
+
+void MinimizeAirlinesController::buildPaths(Vertex<Airport>* origin, Vertex<Airport>* destination, map<Vertex<Airport>*, vector<pair<Vertex<Airport>*, set<string>>>>& prev, vector<Airport>& path, vector<vector<Airport>>& paths, set<string>& airlinesUsed, vector<set<string>>& airlinesUsedForPaths) {
+    path.push_back(destination->getInfo());
+    if (destination == origin) {
+        vector<Airport> newPath = path;
+        reverse(newPath.begin(), newPath.end());
+        paths.push_back(newPath);
+        airlinesUsedForPaths.push_back(airlinesUsed);
+    } else {
+        for (auto &pair : prev[destination]) {
+            Vertex<Airport>* vertex = pair.first;
+            set<string> airlines = pair.second;
+            buildPaths(origin, vertex, prev, path, paths, airlines, airlinesUsedForPaths);
+        }
+    }
+    path.pop_back();
 }
