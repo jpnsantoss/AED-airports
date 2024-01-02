@@ -1,6 +1,3 @@
-//
-// Created by jpsantos on 30-12-2023.
-//
 
 #include "MainMenu.h"
 #include "BestOption.h"
