@@ -31,17 +31,17 @@ public:
 
     size_t getNumberOfReachableCitiesWithMaxStops(const string& code, int maxStops) const;
 
-    set<string> countriesForThisAirport(string &identifier);
+    unordered_set<string> countriesForThisAirport(string &identifier);
 
     int numberOfFlightsPerAirline(string &identifier);
 
     int numberOfFlightsPerCity(string &identifier);
 
-    set<Airline> setOfFlightsOutAirport(string &identifier);
+    unordered_set<Airline> setOfFlightsOutAirport(string &identifier);
 
     size_t numberOfFlightsOutAirport(string &identifier);
 
-    set<string> countriesForThisCity(string &identifier);
+    unordered_set<string> countriesForThisCity(string &identifier);
 
     vector<pair<Airport, unsigned long>> topKAirTraffic(int k);
 
@@ -51,6 +51,8 @@ public:
                                  stack<Vertex<Airport> *> &vertexStack, int &index);
 
     vector<Airport> getMaximumTrips(const Airport &origin);
+
+    Graph<Airport> createUndirectedCopy();
 };
 
 #endif //PROJECT_AED_AIRPORTS_STATISTICSCONTROLLER_H

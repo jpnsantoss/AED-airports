@@ -1,27 +1,20 @@
 #include "FlightController.h"
 
 // Method to find an airport by its code or name
-/**
- * @brief Finds an airport by its code.
- * Complexity: O(n), where n is the number of airports in the dataset.
- * @param identifier - the code of the airport to find.
- * @return The found airport.
- */
-Airport FlightController::findAirport(const string &identifier) {
-    Dataset* dataset = Dataset::getInstance();
-    try {
-        // Try to find the airport by its code
-        return dataset->findAirportByCode(identifier);
-    } catch (runtime_error &e) {
-        // If the airport is not found by its code, search all airports by their name
-        const vector<Airport> &airports = dataset->getAirports();
-        for (const Airport& airport : airports) {
-            if (airport.getAirportCode() == identifier) {
-                return airport;
-            }
-        }
-    }
 
+/**
+ * @brief Finds an airport by its code or name.
+ * Complexity: O(1) if the airport is found by code, O(n) otherwise, where n is the number of airports in the dataset.
+ * @param code - the code or name of the airport to find.
+ * @return The airport found.
+ */
+Airport FlightController::findAirport(const string &code) {
+    Dataset* dataset = Dataset::getInstance();
+    const unordered_set<Airport>& airports = dataset->getAirports();
+    auto it = airports.find(Airport(code));
+    if (it != airports.end()) {
+        return *it;
+    }
     throw runtime_error("Airport not found");
 }
 
@@ -31,35 +24,34 @@ Airport FlightController::findAirport(const string &identifier) {
  * @param name - the name of the airports to find.
  * @return A vector containing all the airports found.
  */
-vector<Airport> FlightController::findAirportsByName(const string &name) {
+unordered_set<Airport> FlightController::findAirportsByName(const string &name) {
     Dataset* dataset = Dataset::getInstance();
-    const vector<Airport> &airports = dataset->getAirports();
-    vector<Airport> matchingAirports;
+    const unordered_set<Airport>& airports = dataset->getAirports();
+    unordered_set<Airport> matchingAirports;
 
     for (const Airport& airport : airports) {
         if (airport.getAirportName() == name) {
-            matchingAirports.push_back(airport);
+            matchingAirports.insert(airport);
         }
     }
 
     return matchingAirports;
 }
 
-// Method to find all airports in a given city
 /**
  * @brief Finds all airports in a given city.
  * Complexity: O(n), where n is the number of airports in the dataset.
  * @param city - the name of the city to find.
- * @return A vector containing all the airports found.
+ * @return An unordered_set containing all the airports found.
  */
-vector<Airport> FlightController::findAirportsByCity(const string &city) {
+unordered_set<Airport> FlightController::findAirportsByCity(const string &city) {
     Dataset* dataset = Dataset::getInstance();
-    const vector<Airport> &airports = dataset->getAirports();
-    vector<Airport> airportsInCity;
+    const unordered_set<Airport>& airports = dataset->getAirports();
+    unordered_set<Airport> airportsInCity;
 
     for (const Airport& airport : airports) {
         if (airport.getCity() == city) {
-            airportsInCity.push_back(airport);
+            airportsInCity.insert(airport);
         }
     }
 
@@ -70,12 +62,12 @@ vector<Airport> FlightController::findAirportsByCity(const string &city) {
  * @brief Gets the nearest airports to a given location.
  * Complexity: O(n), where n is the number of airports in the dataset.
  * @param location - the location to find the nearest airports from.
- * @return A vector containing all the airports found.
+ * @return An unordered_set containing all the nearest airports.
  */
-vector<Airport> FlightController::getNearestAirports(const Location &location) {
+unordered_set<Airport> FlightController::getNearestAirports(const Location &location) {
     Dataset* dataset = Dataset::getInstance();
-    const vector<Airport> &airports = dataset->getAirports();
-    vector<Airport> nearestAirports;
+    const unordered_set<Airport>& airports = dataset->getAirports();
+    unordered_set<Airport> nearestAirports;
     double minDistance = numeric_limits<double>::max();
 
     for (const Airport& airport : airports) {
@@ -85,10 +77,9 @@ vector<Airport> FlightController::getNearestAirports(const Location &location) {
             minDistance = distance;
         }
         if (distance == minDistance) {
-            nearestAirports.push_back(airport);
+            nearestAirports.insert(airport);
         }
     }
 
     return nearestAirports;
 }
-

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <unordered_set>
 #include "utils/Graph.h"
 #include "models/Flight.h"
 #include "models/Airport.h"
@@ -17,9 +18,9 @@ class Dataset {
 private:
     Graph<Airport> airportGraph;
 
-    vector<Flight> flights;
-    vector<Airport> airports;
-    vector<Airline> airlines;
+    unordered_set<Flight> flights;
+    unordered_set<Airport> airports;
+    unordered_set<Airline> airlines;
 
     static Dataset* dataset;
     // Private constructor so that no objects can be created.
@@ -39,15 +40,17 @@ public:
     void operator=(const Dataset&) = delete;
 
     // Getters
-    const vector<Flight> &getFlights() const;
-    const vector<Airport> &getAirports() const;
-    const vector<Airline> &getAirlines() const;
+    const unordered_set<Flight> &getFlights() const;
+    const unordered_set<Airport> &getAirports() const;
+    const unordered_set<Airline> &getAirlines() const;
     const Graph<Airport>& getAirportGraph() const;
 
     // Find methods
     Airport findAirportByCode(const string &code);
     Airline findAirlineByCode(const string &code);
-    Flight* findFlight(const Airport& source, const Airport& destination);
+    Flight * findFlight(const Airport &source, const Airport &destination);
+
+    Airport findAirport(const string &code);
 };
 
 #endif //PROJECT_AED_AIRPORTS_DATASET_H

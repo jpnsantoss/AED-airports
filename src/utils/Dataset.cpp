@@ -13,6 +13,7 @@ Dataset::Dataset() {
 
 /**
  * @brief Gets the singleton instance of the Dataset class.
+ * Complexity: O(1)
  * @return A pointer to the instance.
  */
 Dataset* Dataset::getInstance() {
@@ -26,6 +27,7 @@ Dataset* Dataset::getInstance() {
 
 /**
  * @brief Load airports data from 'airports.csv'.
+ * Complexity: O(n), where n is the number of lines in the file.
  */
 void Dataset::loadAirports() {
     ifstream file("data/airports.csv");
@@ -54,13 +56,14 @@ void Dataset::loadAirports() {
         Location location(latitude, longitude);
         Airport airport(airportCode, airportName, city, country, location);
         airportGraph.addVertex(airport);
-        airports.push_back(airport);
+        airports.insert(airport);
     }
     file.close();
 }
 
 /**
  * @brief Load airlines data from 'airports.csv'.
+ * Complexity: O(n), where n is the number of lines in the file.
  */
 void Dataset::loadAirlines() {
     ifstream file("data/airlines.csv");
@@ -79,13 +82,14 @@ void Dataset::loadAirlines() {
         getline(line, callsign, ',');
         getline(line, country, '\r');
 
-        airlines.emplace_back(airlineCode, airlineName, callsign, country);
+        airlines.emplace(airlineCode, airlineName, callsign, country);
     }
     file.close();
 }
 
 /**
  * @brief Load flights data from 'airports.csv'.
+ * Complexity: O(n), where n is the number of lines in the file.
  */
 void Dataset::loadFlights() {
     ifstream file("data/flights.csv");
@@ -108,7 +112,7 @@ void Dataset::loadFlights() {
         Airport target = findAirportByCode(targetCode);
         Airline airline = findAirlineByCode(airlineCode);
         Flight flight(source, target, airline);
-        flights.push_back(flight);
+        flights.insert(flight);
         airportGraph.addEdge(source, target, flight.getDistance(), flight.getAirline());
     }
     file.close();
@@ -117,31 +121,34 @@ void Dataset::loadFlights() {
 // Getters
 
 /**
- * @brief Gets a vector of all Flight objects.
- * @return A constant reference to the vector of Flight objects.
- */
-const vector<Flight> &Dataset::getFlights() const {
-    return flights;
-}
-
-/**
  * @brief Gets a vector of all Airport objects.
  * @return A constant reference to the vector of Airport objects.
  */
-const vector<Airport> &Dataset::getAirports() const {
+const unordered_set<Airport> &Dataset::getAirports() const {
     return airports;
 }
 
 /**
  * @brief Gets a vector of all Airline objects.
+ * Complexity: O(1)
  * @return A constant reference to the vector of Airline objects.
  */
-const vector<Airline> &Dataset::getAirlines() const {
+const unordered_set<Airline> &Dataset::getAirlines() const {
     return airlines;
 }
 
 /**
+ * @brief Gets a vector of all Airport objects.
+ * Complexity: O(1)
+ * @return A constant reference to the vector of Airport objects.
+ */
+const unordered_set<Flight> &Dataset::getFlights() const {
+    return flights;
+}
+
+/**
  * @brief Gets the graph of Airport objects.
+ * Complexity: O(1)
  * @return A constant reference to the graph of Airport objects.
  */
 const Graph<Airport> &Dataset::getAirportGraph() const {
@@ -151,47 +158,44 @@ const Graph<Airport> &Dataset::getAirportGraph() const {
 //Aux functions
 
 /**
- * @brief Finds an airport by its code.
- * Complexity: O(n), where n is the number of airports.
- * @param code - the airport code.
- * @return The airport object with the specified code.
+ * @brief Finds an airport given its code.
+ * Complexity: O(1) on average, O(n) in the worst case, where n is the number of airports.
+ * @param code - The airport code.
+ * @return A pointer to the Airport object if found, otherwise throws an exception.
  */
 Airport Dataset::findAirportByCode(const string &code) {
-    for (const Airport& airport : airports) {
-        if (airport.getAirportCode() == code) {
-            return airport;
-        }
+    auto it = airports.find(Airport(code));
+    if (it != airports.end()) {
+        return *it;
     }
     throw runtime_error("Airport not found");
 }
 
 /**
- * @brief Finds an airline by its code.
- * Complexity: O(n), where n is the number of airlines.
- * @param code - the airline code.
- * @return The airline object with the specified code.
+ * @brief Finds an airline given its code.
+ * Complexity: O(1) on average, O(n) in the worst case, where n is the number of airlines.
+ * @param code - The airline code.
+ * @return A pointer to the Airline object if found, otherwise throws an exception.
  */
 Airline Dataset::findAirlineByCode(const string &code) {
-    for (const Airline& airline : airlines) {
-        if (airline.getCode() == code) {
-            return airline;
-        }
+    auto it = airlines.find(Airline(code));
+    if (it != airlines.end()) {
+        return *it;
     }
     throw runtime_error("Airline not found");
 }
 
 /**
- * @brief Finds a flight based on source and destination airports.
- * Complexity: O(n), where n is the number of flights in the dataset.
- * @param source - the source airport of the flight.
- * @param destination - the destination airport of the flight.
- * @return A pointer to the found flight object; nullptr if not found.
+ * @brief Finds a flight given the source and destination airports.
+ * Complexity: O(1) on average, O(n) in the worst case, where n is the number of flights.
+ * @param source - The source airport.
+ * @param destination - The destination airport.
+ * @return A pointer to the Flight object if found, otherwise throws an exception.
  */
-Flight* Dataset::findFlight(const Airport& source, const Airport& destination) {
-    for (Flight& flight : flights) {
-        if (flight.getSource() == source && flight.getTarget() == destination) {
-            return &flight;
-        }
+Flight * Dataset::findFlight(const Airport& source, const Airport& destination) {
+    auto it = flights.find(Flight(source, destination, Airline("")));
+    if (it != flights.end()) {
+        return const_cast<Flight*>(&(*it));
     }
-    return nullptr;
+    throw runtime_error("Flight not found");
 }

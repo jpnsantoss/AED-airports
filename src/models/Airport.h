@@ -18,6 +18,7 @@ private:
 public:
     // Constructor
     Airport();
+    Airport(const string &airportCode);
     Airport(const string &airportCode, const string &airportName, const string &city, const string &country, const Location &location);
 
     // Getters

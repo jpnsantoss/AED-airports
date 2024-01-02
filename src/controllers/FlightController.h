@@ -12,10 +12,10 @@ using namespace std;
 class FlightController {
 
 public:
-    static vector<Airport> findAirportsByName(const string &name);
-    static vector<Airport> findAirportsByCity(const string &city);
+    static unordered_set<Airport> findAirportsByName(const string &name);
+    static unordered_set<Airport> findAirportsByCity(const string &city);
     static Airport findAirport(const string &identifier);
-    static vector<Airport> getNearestAirports(const Location &location);
+    static unordered_set<Airport> getNearestAirports(const Location &location);
 };
 
 #endif //PROJECT_AED_AIRPORTS_FLIGHTCONTROLLER_H

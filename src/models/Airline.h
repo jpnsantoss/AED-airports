@@ -16,7 +16,7 @@ private:
 public:
     // Constructor
     Airline(const string &code, const string &name, const string &callsign, const string &country);
-
+    Airline(const string &code);
     // Getters
     string getCode() const;
     string getName() const;
@@ -32,6 +32,16 @@ public:
     // Operators
     bool operator<(const Airline& other) const {
         return this->code < other.code;
+    }
+    bool operator==(const Airline& other) const {
+        return code == other.code;
+    }
+};
+
+template <>
+struct std::hash<Airline> {
+    size_t operator()(const Airline& airline) const {
+        return hash<string>()(airline.getCode());
     }
 };
 
