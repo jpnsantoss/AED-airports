@@ -13,6 +13,14 @@ Airport::Airport() {
     this->location = Location();
 }
 
+Airport::Airport(const string &airportCode){
+    this->airportCode = airportCode;
+    this->airportName = "";
+    this->city = "";
+    this->country = "";
+    this->location = Location();
+}
+
 /**
  * @brief Constructor for Airport class.
  * @param code - the airport code.

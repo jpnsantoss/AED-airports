@@ -61,8 +61,8 @@ size_t StatisticsController::numberOfFlightsOutAirport(string &identifier) {
  * @param identifier - the origin airport code.
  * @return A set of airlines operating flights out of the specified airport.
  */
-set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
-    set<Airline> airlines;
+unordered_set<Airline> StatisticsController::setOfFlightsOutAirport(string &identifier) {
+    unordered_set<Airline> airlines;
     string upperId;
     for (char c: identifier) {
         upperId += (char)toupper(c);
@@ -130,8 +130,9 @@ int StatisticsController::numberOfFlightsPerCity(string &city) {
  * Complexity: O(n), where n is the code of adjacent airports.
  * @param identifier - the origin airport code.
  * @return A set of countries that the specified airport flies to.
- */set<string> StatisticsController::countriesForThisAirport(string &identifier) {
-    set<string> countries;
+ */
+unordered_set<string> StatisticsController::countriesForThisAirport(string &identifier) {
+    unordered_set<string> countries;
     string upperId;
     for (char c: identifier) {
         upperId += (char)toupper(c);
@@ -154,8 +155,8 @@ int StatisticsController::numberOfFlightsPerCity(string &city) {
  * @param code - the origin airport code.
  * @return The number of destination airports.
  */
-set<string> StatisticsController::countriesForThisCity(string &city) {
-    set<string> countries;
+unordered_set<string> StatisticsController::countriesForThisCity(string &city) {
+    unordered_set<string> countries;
 
     for (const Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
         if(vertex->getInfo().getCity() == city) {
@@ -328,6 +329,12 @@ size_t StatisticsController::getNumberOfReachableCitiesWithMaxStops(const string
     return reachableCities.size();
 }
 
+/**
+ * @brief Gets the maximum number of trips from a given airport.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @param origin - the origin airport.
+ * @return A vector containing the airports in the longest trip.
+ */
 vector<Airport> StatisticsController::getMaximumTrips(const Airport &origin) {
     map<Vertex<Airport>*, Vertex<Airport>*> prev;
     queue<Vertex<Airport>*> queue;
@@ -445,20 +452,44 @@ vector<pair<Airport, unsigned long>> StatisticsController::topKAirTraffic(int k)
 }
 
 /**
- * @brief Finds airports that are essential to the network's capability.
+ * @brief Creates an undirected copy of the airport graph.
  * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
- * @return An unordered set of essential airports.
+ * @return The undirected graph.
+ */
+Graph<Airport> StatisticsController::createUndirectedCopy() {
+    Graph<Airport> undirectedGraph;
+
+    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        undirectedGraph.addVertex(vertex->getInfo());
+    }
+
+    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+        for (const Edge<Airport>& edge : vertex->getAdj()) {
+            undirectedGraph.addEdge(vertex->getInfo(), edge.getDest()->getInfo(), edge.getDistance(), edge.getAirline());
+            undirectedGraph.addEdge(edge.getDest()->getInfo(), vertex->getInfo(), edge.getDistance(), edge.getAirline());
+        }
+    }
+
+    return undirectedGraph;
+}
+
+/**
+ * @brief Finds the essential airports in the graph.
+ * Complexity: O(V+E), where V is the number of vertices and E the number of edges.
+ * @return A set containing the essential airports.
  */
 unordered_set<Airport> StatisticsController::findEssentialAirports() {
+    Graph<Airport> undirectedGraph = createUndirectedCopy();
+
     int index = 1;
     unordered_set<Airport> essentialAirports;
     stack<Vertex<Airport>*> vertexStack;
-    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+    for (Vertex<Airport>* vertex : undirectedGraph.getVertexSet()) {
         vertex->setVisited(false);
         vertex->setProcessing(false);
     }
 
-    for (Vertex<Airport>* vertex : airportGraph.getVertexSet()) {
+    for (Vertex<Airport>* vertex : undirectedGraph.getVertexSet()) {
         if (!vertex->isVisited()) {
             dfsForEssentialAirports(vertex, essentialAirports, vertexStack, index);
         }

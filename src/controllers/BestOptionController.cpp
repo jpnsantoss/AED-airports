@@ -146,7 +146,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByAirportName:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByName(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByName(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -154,7 +154,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByCity:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -164,7 +164,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     {
                         vector<string> destCoords = splitString(destination, ',');
                         Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
-                        vector<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
+                        unordered_set<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -178,7 +178,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
         }
         case FlightOption::ByAirportName:
         {
-            vector<Airport> sourceAirports = FlightController::findAirportsByName(source);
+            unordered_set<Airport> sourceAirports = FlightController::findAirportsByName(source);
             for (const auto &sourceAirport : sourceAirports) {
                 switch (destinationOption) {
                     case FlightOption::ByAirportCode:
@@ -191,7 +191,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByAirportName:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByName(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByName(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -199,7 +199,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByCity:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -210,7 +210,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                         vector<string> destCoords = splitString(destination, ',');
                         Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
 
-                        vector<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
+                        unordered_set<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -224,7 +224,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
         }
         case FlightOption::ByCity:
         {
-            vector<Airport> sourceAirports = FlightController::findAirportsByCity(source);
+            unordered_set<Airport> sourceAirports = FlightController::findAirportsByCity(source);
             for (const auto &sourceAirport : sourceAirports) {
                 switch (destinationOption) {
                     case FlightOption::ByAirportCode:
@@ -237,7 +237,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByAirportName:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByName(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByName(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -245,7 +245,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByCity:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -255,7 +255,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     {
                         vector<string> destCoords = splitString(destination, ',');
                         Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
-                        vector<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
+                        unordered_set<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -271,7 +271,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
         {
             vector<string> sourceCoords = splitString(source, ',');
             Location sourceLocation(stod(sourceCoords[0]), stod(sourceCoords[1]));
-            vector<Airport> sourceAirports = FlightController::getNearestAirports(sourceLocation);
+            unordered_set<Airport> sourceAirports = FlightController::getNearestAirports(sourceLocation);
             for (const auto &sourceAirport : sourceAirports) {
                 switch (destinationOption) {
                     case FlightOption::ByAirportCode:
@@ -284,7 +284,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByAirportName:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByName(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByName(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -292,7 +292,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     }
                     case FlightOption::ByCity:
                     {
-                        vector<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
+                        unordered_set<Airport> destinationAirports = FlightController::findAirportsByCity(destination);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }
@@ -302,7 +302,7 @@ vector<vector<Airport>> BestOptionController::getBestFlightOption(FlightOption s
                     {
                         vector<string> destCoords = splitString(destination, ',');
                         Location destinationLocation(stod(destCoords[0]), stod(destCoords[1]));
-                        vector<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
+                        unordered_set<Airport> destinationAirports = FlightController::getNearestAirports(destinationLocation);
                         for (const auto &destinationAirport : destinationAirports) {
                             findBestFlightPaths(sourceAirport.getAirportCode(), destinationAirport.getAirportCode(), res);
                         }

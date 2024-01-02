@@ -29,5 +29,22 @@ public:
     void setSource(const Airport &source);
     void setTarget(const Airport &target);
     void setAirline(const Airline &airline);
+
+    bool operator==(const Flight& other) const {
+        return source == other.source && target == other.target && airline == other.airline;
+    }
 };
+
+namespace std {
+    template <>
+    struct hash<Flight> {
+        size_t operator()(const Flight& flight) const {
+            // Compute individual hash values for three data members and combine them using XOR and bit shifting
+            return ((hash<Airport>()(flight.getSource())
+                     ^ (hash<Airport>()(flight.getTarget()) << 1)) >> 1)
+                   ^ (hash<Airline>()(flight.getAirline()) << 1);
+        }
+    };
+}
+
 #endif //PROJECT_AED_AIRPORTS_FLIGHT_H

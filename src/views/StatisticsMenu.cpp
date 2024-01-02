@@ -23,7 +23,7 @@ void StatisticsMenu::flightsOutAirport() {
     StatisticsController controller;
     cout << "Enter airport code: ";
     cin >> code;
-    set<Airline> airlines = controller.setOfFlightsOutAirport(code);
+    unordered_set<Airline> airlines = controller.setOfFlightsOutAirport(code);
     cout << "\n***********************************************************\n";
     cout << "Number of flights out of this airport: " << controller.numberOfFlightsOutAirport(code) << "\n";
     cout << "Number of airlines that flight out of this airport: " << airlines.size() << "\n\n";
@@ -85,7 +85,7 @@ void StatisticsMenu::airportToCountries() {
                 string code;
                 cout << "Enter airport code: ";
                 cin >> code;
-                set<string> countries = controller.countriesForThisAirport(code);
+                unordered_set<string> countries = controller.countriesForThisAirport(code);
                 cout << "\n***********************************************************\n";
                 cout << "\n Number of countries this airport flies to: " << countries.size() << "\n\n";
                 for(const string& c: countries){
@@ -97,7 +97,7 @@ void StatisticsMenu::airportToCountries() {
                 string name;
                 cout << "Enter the name of the city: ";
                 cin >> name;
-                set<string> countries = controller.countriesForThisCity(name);
+                unordered_set<string> countries = controller.countriesForThisCity(name);
                 cout << "\n***********************************************************\n";
                 cout << "\n Number of countries this city flies to: " << countries.size() << "\n\n";
                 for(const string& c: countries){
@@ -234,7 +234,9 @@ void StatisticsMenu::topKAirports() {
  */
 void StatisticsMenu::essentialAirports() {
     StatisticsController statisticsController;
+    cout << "Generating essential airports..." << endl;
     unordered_set<Airport> essentialAirports = statisticsController.findEssentialAirports();
+    system("clear");
     cout << "\n***********************************************************\n";
     cout << "\n Number of essential airports: " << essentialAirports.size() << endl;
     cout << endl;

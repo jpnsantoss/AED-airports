@@ -54,7 +54,7 @@ void Dataset::loadAirports() {
         Location location(latitude, longitude);
         Airport airport(airportCode, airportName, city, country, location);
         airportGraph.addVertex(airport);
-        airports.push_back(airport);
+        airports.insert(airport);
     }
     file.close();
 }
@@ -79,7 +79,7 @@ void Dataset::loadAirlines() {
         getline(line, callsign, ',');
         getline(line, country, '\r');
 
-        airlines.emplace_back(airlineCode, airlineName, callsign, country);
+        airlines.emplace(airlineCode, airlineName, callsign, country);
     }
     file.close();
 }
@@ -108,7 +108,7 @@ void Dataset::loadFlights() {
         Airport target = findAirportByCode(targetCode);
         Airline airline = findAirlineByCode(airlineCode);
         Flight flight(source, target, airline);
-        flights.push_back(flight);
+        flights.insert(flight);
         airportGraph.addEdge(source, target, flight.getDistance(), flight.getAirline());
     }
     file.close();
@@ -120,7 +120,7 @@ void Dataset::loadFlights() {
  * @brief Gets a vector of all Flight objects.
  * @return A constant reference to the vector of Flight objects.
  */
-const vector<Flight> &Dataset::getFlights() const {
+const unordered_set<Flight> &Dataset::getFlights() const {
     return flights;
 }
 
@@ -128,7 +128,7 @@ const vector<Flight> &Dataset::getFlights() const {
  * @brief Gets a vector of all Airport objects.
  * @return A constant reference to the vector of Airport objects.
  */
-const vector<Airport> &Dataset::getAirports() const {
+const unordered_set<Airport> &Dataset::getAirports() const {
     return airports;
 }
 
@@ -136,7 +136,7 @@ const vector<Airport> &Dataset::getAirports() const {
  * @brief Gets a vector of all Airline objects.
  * @return A constant reference to the vector of Airline objects.
  */
-const vector<Airline> &Dataset::getAirlines() const {
+const unordered_set<Airline> &Dataset::getAirlines() const {
     return airlines;
 }
 
@@ -151,40 +151,41 @@ const Graph<Airport> &Dataset::getAirportGraph() const {
 //Aux functions
 
 /**
- * @brief Finds an airport by its code.
- * Complexity: O(n), where n is the number of flights from the airport.
- * @param code - the airport code.
- * @return The airport object with the specified code.
+ * @brief Finds an airport given its code.
+ * @param code - The airport code.
+ * @return A pointer to the Airport object if found, otherwise throws an exception.
  */
 Airport Dataset::findAirportByCode(const string &code) {
-    for (const Airport& airport : airports) {
-        if (airport.getAirportCode() == code) {
-            return airport;
-        }
+    auto it = airports.find(Airport(code));
+    if (it != airports.end()) {
+        return *it;
     }
     throw runtime_error("Airport not found");
 }
 
 /**
- * @brief Finds an airline by its code.
- * Complexity: O(n), where n is the number of flights from the airport.
- * @param code - the airport code.
- * @return The airport object with the specified code.
+ * @brief Finds an airline given its code.
+ * @param code - The airline code.
+ * @return A pointer to the Airline object if found, otherwise throws an exception.
  */
 Airline Dataset::findAirlineByCode(const string &code) {
-    for (const Airline& airline : airlines) {
-        if (airline.getCode() == code) {
-            return airline;
-        }
+    auto it = airlines.find(Airline(code));
+    if (it != airlines.end()) {
+        return *it;
     }
     throw runtime_error("Airline not found");
 }
 
-Flight* Dataset::findFlight(const Airport& source, const Airport& destination) {
-    for (Flight& flight : flights) {
-        if (flight.getSource() == source && flight.getTarget() == destination) {
-            return &flight;
-        }
+/**
+ * @brief Finds a flight given the source and destination airports.
+ * @param source - The source airport.
+ * @param destination - The destination airport.
+ * @return A pointer to the Flight object if found, otherwise throws an exception.
+ */
+Flight * Dataset::findFlight(const Airport& source, const Airport& destination) {
+    auto it = flights.find(Flight(source, destination, Airline("")));
+    if (it != flights.end()) {
+        return const_cast<Flight*>(&(*it));
     }
-    return nullptr;
+    throw runtime_error("Flight not found");
 }
